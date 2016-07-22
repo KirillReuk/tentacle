@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PSD Parser", "PSD Parser\PSD Parser.csproj", "{00049093-98AE-409F-86E7-B0127F497800}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kit Generator Form", "PSD Parser\Kit Generator Form.csproj", "{00049093-98AE-409F-86E7-B0127F497800}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kit Generator", "Kit Generator\Kit Generator.csproj", "{EB7AF4E3-CBF7-4DC5-8779-4E73B2999F3B}"
 EndProject

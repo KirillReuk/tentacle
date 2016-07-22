@@ -1,84 +1,83 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using ImageMagick;
-using PhotoshopFile;
-using PaintDotNet.Core;
 
-namespace Kit_Generator
+namespace KitGenerator
 {
     public partial class Form1 : Form
     {
-        const string manufacturer = "Adidas";
-        const int countStart = 81;
-        const int countEnd = 95;
-        string imagePath = "C:\\Users\\Kirill\\Documents\\Uni\\tentacleporn\\Standard Pack v3.0\\Adidas\\Adidas 81-94.psd";
-        string imageSavePath = "C:\\Users\\Kirill\\Documents\\Uni\\tentacleporn\\Standard Pack v3.0\\Adidas\\Adidas 1-401.psd";
-        string imageSaveFolder = "C:\\Users\\Kirill\\Documents\\Uni\\tentacleporn\\Standard Pack v3.0\\Adidas\\";
+        string manufacturer;
+        int kitNumber;
+        Color color1, color2, color3;
 
         public Form1()
         {
             InitializeComponent();
-            action();
+            Initialization();
         }
 
-        private void action()
+        private void Initialization()
         {
-            PsdFile image = new PsdFile();
-            if (!FilePathHasInvalidChars(imagePath))
+            List<string> directories = new List<string>(Directory.GetDirectories("..\\..\\..\\kits\\"));
+            manComboBox.DataSource = directories.Select(x => Path.GetFileName(x)).ToArray();
+        }
+
+        private void RefreshImage()
+        {
+            KitGenerator kg = new KitGenerator(manufacturer, kitNumber, color1, color2, color3);
+            pictureBox.Image = kg.GetImage();
+        }
+
+        private void runButton_Click(object sender, EventArgs e)
+        {
+            RefreshImage();
+        }
+
+        private void manComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            manufacturer = manComboBox.SelectedItem.ToString();
+
+            List<string> files = new List<string>(Directory.GetFiles("..\\..\\..\\kits\\" + manufacturer));
+            numberComboBox.DataSource = files.Select(x => Path.GetFileNameWithoutExtension(x)).Where(x => x != "colors").ToArray();
+        }
+
+        private void numberComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            kitNumber = Int32.Parse(numberComboBox.SelectedItem.ToString().Split(' ')[1]);
+
+            RefreshImage();
+        }
+
+        private void colorButton1_Click(object sender, EventArgs e)
+        {            
+            if (colorDialog.ShowDialog() == DialogResult.OK)
             {
-                image = new PsdFile(imagePath, Encoding.ASCII);
-                image.Save(imageSavePath, Encoding.ASCII);
+                colorButton1.BackColor = colorDialog.Color;
+                color1 = colorDialog.Color;
+                RefreshImage();
             }
+        }
 
-            int cow = 3;
-            for (int j = countStart; j < countEnd; ++j)
+        private void colorButton2_Click(object sender, EventArgs e)
+        {
+            if (colorDialog.ShowDialog() == DialogResult.OK)
             {
-                PsdFile newImage = new PsdFile(imageSavePath, Encoding.ASCII);
-                newImage.Layers.Clear();
-
-                newImage.Layers.Add(image.Layers[1]);
-                for (; (image.Layers[cow].Name != manufacturer + " " + j) && (image.Layers[cow].Name != manufacturer + j); cow++)
-                    newImage.Layers.Add(image.Layers[cow]);
-                newImage.Layers.Add(image.Layers[cow]);
-                newImage.Layers.Add(image.Layers[image.Layers.Count-2]);
-
-                newImage.Save(imageSaveFolder + manufacturer + " " + j + ".psd", Encoding.ASCII);
-                cow++;
+                colorButton2.BackColor = colorDialog.Color;
+                color2 = colorDialog.Color;
+                RefreshImage();
             }
         }
 
-        public static bool FilePathHasInvalidChars(string path)
+        private void colorButton3_Click(object sender, EventArgs e)
         {
-            return (!string.IsNullOrEmpty(path) && path.IndexOfAny(System.IO.Path.GetInvalidPathChars()) >= 0);
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-            int convertedInt;
-            if (Int32.TryParse(textBox1.Text, out convertedInt))
+            if (colorDialog.ShowDialog() == DialogResult.OK)
             {
-                showLayer(convertedInt);
-            }
-        }
-
-        private void showLayer(int layerNumber)
-        {
-            
-            using (MagickImageCollection collection = new MagickImageCollection(imagePath))
-            {
-                MagickReadSettings settings = new MagickReadSettings();
-                
-                MagickImage image = collection[layerNumber];
-                MagickFormatInfo info = image.FormatInfo;
-
-                pictureBox.Image = image.ToBitmap();
+                colorButton3.BackColor = colorDialog.Color;
+                color3 = colorDialog.Color;
+                RefreshImage();
             }
         }
     }

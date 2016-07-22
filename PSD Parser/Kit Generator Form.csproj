@@ -7,8 +7,8 @@
     <ProjectGuid>{00049093-98AE-409F-86E7-B0127F497800}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Kit_Generator</RootNamespace>
-    <AssemblyName>Kit Generator</AssemblyName>
+    <RootNamespace>KitGenerator</RootNamespace>
+    <AssemblyName>PSD Parser</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -100,6 +100,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kit Generator\Kit Generator.csproj">
+      <Project>{eb7af4e3-cbf7-4dc5-8779-4e73b2999f3b}</Project>
+      <Name>Kit Generator</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
