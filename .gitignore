@@ -221,3 +221,6 @@ pip-log.txt
 *.png
 /packages
 /Kit Generator/Samples
+*.rar
+/ss templates/
+*.ttf

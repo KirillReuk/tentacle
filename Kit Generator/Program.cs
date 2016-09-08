@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Text;
 using ImageMagick;
 using PhotoshopFile;
-using System.IO;
-using System.Drawing.Imaging;
 
 namespace KitGenerator
 {
@@ -28,12 +24,13 @@ namespace KitGenerator
         public string collar { get; set; }
         public string brand { get; set; }
         string topImagePath, brandsImagePath, collarImagePath, sponsorImagePath, designImagePath, bottomImagePath;
-        Color mainColor, color1, color2, color3;
+        Color mainColor;
+        List<Color> designColors, collarColors, brandColors;
         readonly Color templateColor1 = Color.Magenta;
         readonly Color templateColor2 = Color.Cyan;
         readonly Color templateColor3 = Color.Yellow;
 
-        public KitGenerator(string _manufacturer, string _design, string _sponsor, string _collar, string _brand, Color _mainColor, Color _color1, Color _color2, Color _color3)
+        public KitGenerator(string _manufacturer, string _design, string _sponsor, string _collar, string _brand, Color _mainColor, List<Color> _designColors, List<Color> _collarColors, List<Color> _brandColors)
         {
             manufacturer = _manufacturer;
             design = _design;
@@ -50,9 +47,9 @@ namespace KitGenerator
             brandsImagePath = "..\\..\\..\\kits\\brands\\" + manufacturer + " " + brand.ToString() + ".png";
 
             mainColor = _mainColor;
-            color1 = _color1;
-            color2 = _color2;
-            color3 = _color3;
+            designColors = _designColors;
+            collarColors = _collarColors;
+            brandColors = _brandColors;
         }
         
         private bool ColorsAreClose(Color colorA, Color colorB, int threshold = 250)
@@ -113,6 +110,7 @@ namespace KitGenerator
         
         public Image GetKit()
         {
+            //bottom layer
             MagickImageCollection collection = new MagickImageCollection(bottomImagePath);
 
             Rectangle offsetRect = new PsdFile(bottomImagePath, Encoding.ASCII).Layers[0].Rect;
@@ -121,30 +119,18 @@ namespace KitGenerator
             frame.Page = new MagickGeometry(offsetRect.X, offsetRect.Y, 0, 0);
             collection.Add(frame);
             
-                    
-
             Bitmap design = (Bitmap)Bitmap.FromFile(designImagePath);
+            MagickImage designImg = new MagickImage(ColorizeTemplateImage(design, designColors[0], designColors[1], designColors[2]));
+            collection.Add(designImg);
+
             Bitmap collar = (Bitmap)Bitmap.FromFile(collarImagePath);
+            MagickImage collarImg = new MagickImage(ColorizeTemplateImage(collar, collarColors[0], collarColors[1], collarColors[2]));
+            collection.Add(collarImg);
+
             Bitmap brand = (Bitmap)Bitmap.FromFile(brandsImagePath);
-
-            using (Graphics g = Graphics.FromImage(design))
-            {
-                g.DrawImage(collar, new Point(0, 0));
-                g.DrawImage(brand, new Point(0, 0));
-            }
+            MagickImage brandImg = new MagickImage(ColorizeTemplateImage(brand, brandColors[0], brandColors[1], brandColors[2]));
+            collection.Add(brandImg);
             
-            Bitmap colorizedDesign = ColorizeTemplateImage(design, color1, color2, color3);
-            
-            for (int ii = 0; ii < design.Height; ii++)
-                for (int jj = 0; jj < design.Height; jj++)
-                    if (design.GetPixel(ii, jj) == colorizedDesign.GetPixel(ii, jj))
-                        break;
-            
-                        
-            MagickImage img = new MagickImage(colorizedDesign);
-
-            
-            collection.Add(img);
             
             collection.AddImage(new MagickImageCollection(sponsorImagePath));
             
@@ -164,7 +150,6 @@ namespace KitGenerator
             result.Composite(topImageCollection[3], offsets[2].Item1, offsets[2].Item2, CompositeOperator.Multiply);
             result.Composite(topImageCollection[4], offsets[3].Item1, offsets[3].Item2, CompositeOperator.HardLight);
             result.Composite(topImageCollection[5], offsets[4].Item1, offsets[4].Item2, CompositeOperator.No);
-            
             
             return result.ToBitmap();
         }

@@ -15,7 +15,8 @@ namespace KitGenerator
         string collar;
         string brand;
 
-        Color mainColor, color1, color2, color3;
+        Color mainColor;
+        List<Color> designColors = new List<Color>(), collarColors = new List<Color>(), brandColors = new List<Color>();
 
         public Form1()
         {
@@ -37,11 +38,22 @@ namespace KitGenerator
             if (!String.IsNullOrEmpty(manufacturer)&&!String.IsNullOrEmpty(design)&&!String.IsNullOrEmpty(sponsor)&&!String.IsNullOrEmpty(collar)&&!String.IsNullOrEmpty(brand))
             {
                 mainColor = mainColorButton.BackColor;
-                color1 = designColorButton1.BackColor;
-                color2 = designColorButton2.BackColor;
-                color3 = designColorButton3.BackColor;
-                
-                KitGenerator kg = new KitGenerator(manufacturer, design, sponsor, collar, brand, mainColor, color1, color2, color3);
+
+                designColors.Clear();
+                collarColors.Clear();
+                brandColors.Clear();
+
+                designColors.Add(designColorButton1.BackColor);
+                designColors.Add(designColorButton2.BackColor);
+                designColors.Add(designColorButton3.BackColor);
+                collarColors.Add(collarColorButton1.BackColor);
+                collarColors.Add(collarColorButton2.BackColor);
+                collarColors.Add(collarColorButton3.BackColor);
+                brandColors.Add(brandColorButton1.BackColor);
+                brandColors.Add(brandColorButton2.BackColor);
+                brandColors.Add(brandColorButton3.BackColor);
+
+                KitGenerator kg = new KitGenerator(manufacturer, design, sponsor, collar, brand, mainColor, designColors, collarColors, brandColors);
                 pictureBox.Image = kg.GetKit();
             }
         }
@@ -54,6 +66,10 @@ namespace KitGenerator
         private void manComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             manufacturer = manComboBox.SelectedItem.ToString();
+            
+            design = "";
+            collar = "";
+            brand = "";
 
             List<string> designFiles = new List<string>(Directory.GetFiles("..\\..\\..\\kits\\designs\\"));
             designComboBox.DataSource = designFiles.Select(x => Path.GetFileNameWithoutExtension(x)).Where(x => x.Split(' ')[0] == manufacturer).Select(x => x.Split(' ')[1]).ToArray();
@@ -65,8 +81,10 @@ namespace KitGenerator
             brandComboBox.DataSource = brandFiles.Select(x => Path.GetFileNameWithoutExtension(x)).Where(x => x.Split(' ')[0] == manufacturer).Select(x => x.Split(' ')[1]).ToArray();
         }
 
-        private void numberComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void designComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (designComboBox.DataSource == null)
+                return;
             design = designComboBox.SelectedItem.ToString();
 
             RefreshImage();
@@ -108,15 +126,74 @@ namespace KitGenerator
             RefreshImage();
         }
 
+        private void collarColorButton1_Click(object sender, EventArgs e)
+        {
+            if (colorDialog.ShowDialog() == DialogResult.OK)
+            {
+                collarColorButton1.BackColor = colorDialog.Color;
+            }
+            RefreshImage();
+        }
+
+        private void collarColorButton2_Click(object sender, EventArgs e)
+        {
+            if (colorDialog.ShowDialog() == DialogResult.OK)
+            {
+                collarColorButton2.BackColor = colorDialog.Color;
+            }
+            RefreshImage();
+        }
+
+
+        private void collarColorButton3_Click(object sender, EventArgs e)
+        {
+            if (colorDialog.ShowDialog() == DialogResult.OK)
+            {
+                collarColorButton3.BackColor = colorDialog.Color;
+            }
+            RefreshImage();
+        }
+
         private void brandComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (brandComboBox.DataSource == null)
+                return;
             brand = brandComboBox.SelectedItem.ToString();
 
             RefreshImage();
         }
-        
+
+        private void brandColorButton1_Click(object sender, EventArgs e)
+        {
+            if (colorDialog.ShowDialog() == DialogResult.OK)
+            {
+                brandColorButton1.BackColor = colorDialog.Color;
+            }
+            RefreshImage();
+        }
+
+        private void brandColorButton2_Click(object sender, EventArgs e)
+        {
+            if (colorDialog.ShowDialog() == DialogResult.OK)
+            {
+                brandColorButton2.BackColor = colorDialog.Color;
+            }
+            RefreshImage();
+        }
+
+        private void brandColorButton3_Click(object sender, EventArgs e)
+        {
+            if (colorDialog.ShowDialog() == DialogResult.OK)
+            {
+                brandColorButton3.BackColor = colorDialog.Color;
+            }
+            RefreshImage();
+        }
+
         private void collarComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (collarComboBox.DataSource == null)
+                return;
             collar = collarComboBox.SelectedItem.ToString();
 
             RefreshImage();
@@ -124,6 +201,8 @@ namespace KitGenerator
 
         private void sponsorComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (sponsorComboBox.SelectedItem == null)
+                return;
             sponsor = sponsorComboBox.SelectedItem.ToString();
 
             RefreshImage();

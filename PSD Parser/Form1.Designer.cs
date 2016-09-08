@@ -45,6 +45,12 @@
             this.label5 = new System.Windows.Forms.Label();
             this.brandComboBox = new System.Windows.Forms.ComboBox();
             this.mainColorButton = new System.Windows.Forms.Button();
+            this.collarColorButton3 = new System.Windows.Forms.Button();
+            this.collarColorButton2 = new System.Windows.Forms.Button();
+            this.collarColorButton1 = new System.Windows.Forms.Button();
+            this.brandColorButton3 = new System.Windows.Forms.Button();
+            this.brandColorButton2 = new System.Windows.Forms.Button();
+            this.brandColorButton1 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -83,7 +89,7 @@
             this.designComboBox.Name = "designComboBox";
             this.designComboBox.Size = new System.Drawing.Size(206, 24);
             this.designComboBox.TabIndex = 3;
-            this.designComboBox.SelectedIndexChanged += new System.EventHandler(this.numberComboBox_SelectedIndexChanged);
+            this.designComboBox.SelectedIndexChanged += new System.EventHandler(this.designComboBox_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -106,7 +112,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 220);
+            this.label3.Location = new System.Drawing.Point(12, 135);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(61, 17);
             this.label3.TabIndex = 13;
@@ -115,7 +121,7 @@
             // sponsorComboBox
             // 
             this.sponsorComboBox.FormattingEnabled = true;
-            this.sponsorComboBox.Location = new System.Drawing.Point(12, 239);
+            this.sponsorComboBox.Location = new System.Drawing.Point(12, 154);
             this.sponsorComboBox.Name = "sponsorComboBox";
             this.sponsorComboBox.Size = new System.Drawing.Size(206, 24);
             this.sponsorComboBox.TabIndex = 12;
@@ -124,7 +130,7 @@
             // designColorButton1
             // 
             this.designColorButton1.BackColor = System.Drawing.Color.Maroon;
-            this.designColorButton1.Location = new System.Drawing.Point(12, 138);
+            this.designColorButton1.Location = new System.Drawing.Point(12, 109);
             this.designColorButton1.Name = "designColorButton1";
             this.designColorButton1.Size = new System.Drawing.Size(65, 23);
             this.designColorButton1.TabIndex = 14;
@@ -134,7 +140,7 @@
             // designColorButton2
             // 
             this.designColorButton2.BackColor = System.Drawing.Color.Cyan;
-            this.designColorButton2.Location = new System.Drawing.Point(12, 167);
+            this.designColorButton2.Location = new System.Drawing.Point(83, 109);
             this.designColorButton2.Name = "designColorButton2";
             this.designColorButton2.Size = new System.Drawing.Size(65, 23);
             this.designColorButton2.TabIndex = 15;
@@ -144,7 +150,7 @@
             // designColorButton3
             // 
             this.designColorButton3.BackColor = System.Drawing.Color.Yellow;
-            this.designColorButton3.Location = new System.Drawing.Point(12, 196);
+            this.designColorButton3.Location = new System.Drawing.Point(153, 109);
             this.designColorButton3.Name = "designColorButton3";
             this.designColorButton3.Size = new System.Drawing.Size(65, 23);
             this.designColorButton3.TabIndex = 16;
@@ -154,7 +160,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 280);
+            this.label4.Location = new System.Drawing.Point(12, 195);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(44, 17);
             this.label4.TabIndex = 18;
@@ -163,7 +169,7 @@
             // collarComboBox
             // 
             this.collarComboBox.FormattingEnabled = true;
-            this.collarComboBox.Location = new System.Drawing.Point(12, 299);
+            this.collarComboBox.Location = new System.Drawing.Point(12, 214);
             this.collarComboBox.Name = "collarComboBox";
             this.collarComboBox.Size = new System.Drawing.Size(206, 24);
             this.collarComboBox.TabIndex = 17;
@@ -172,7 +178,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(12, 344);
+            this.label5.Location = new System.Drawing.Point(12, 294);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(46, 17);
             this.label5.TabIndex = 23;
@@ -181,7 +187,7 @@
             // brandComboBox
             // 
             this.brandComboBox.FormattingEnabled = true;
-            this.brandComboBox.Location = new System.Drawing.Point(12, 363);
+            this.brandComboBox.Location = new System.Drawing.Point(12, 313);
             this.brandComboBox.Name = "brandComboBox";
             this.brandComboBox.Size = new System.Drawing.Size(206, 24);
             this.brandComboBox.TabIndex = 22;
@@ -189,13 +195,73 @@
             // 
             // mainColorButton
             // 
-            this.mainColorButton.BackColor = System.Drawing.Color.DarkTurquoise;
-            this.mainColorButton.Location = new System.Drawing.Point(12, 109);
+            this.mainColorButton.BackColor = System.Drawing.Color.RoyalBlue;
+            this.mainColorButton.Location = new System.Drawing.Point(224, 79);
             this.mainColorButton.Name = "mainColorButton";
             this.mainColorButton.Size = new System.Drawing.Size(65, 23);
             this.mainColorButton.TabIndex = 24;
             this.mainColorButton.UseVisualStyleBackColor = false;
             this.mainColorButton.Click += new System.EventHandler(this.mainColorButton_Click);
+            // 
+            // collarColorButton3
+            // 
+            this.collarColorButton3.BackColor = System.Drawing.Color.Yellow;
+            this.collarColorButton3.Location = new System.Drawing.Point(153, 244);
+            this.collarColorButton3.Name = "collarColorButton3";
+            this.collarColorButton3.Size = new System.Drawing.Size(65, 23);
+            this.collarColorButton3.TabIndex = 27;
+            this.collarColorButton3.UseVisualStyleBackColor = false;
+            this.collarColorButton3.Click += new System.EventHandler(this.collarColorButton3_Click);
+            // 
+            // collarColorButton2
+            // 
+            this.collarColorButton2.BackColor = System.Drawing.Color.Cyan;
+            this.collarColorButton2.Location = new System.Drawing.Point(83, 244);
+            this.collarColorButton2.Name = "collarColorButton2";
+            this.collarColorButton2.Size = new System.Drawing.Size(65, 23);
+            this.collarColorButton2.TabIndex = 26;
+            this.collarColorButton2.UseVisualStyleBackColor = false;
+            this.collarColorButton2.Click += new System.EventHandler(this.collarColorButton2_Click);
+            // 
+            // collarColorButton1
+            // 
+            this.collarColorButton1.BackColor = System.Drawing.Color.Maroon;
+            this.collarColorButton1.Location = new System.Drawing.Point(12, 244);
+            this.collarColorButton1.Name = "collarColorButton1";
+            this.collarColorButton1.Size = new System.Drawing.Size(65, 23);
+            this.collarColorButton1.TabIndex = 25;
+            this.collarColorButton1.UseVisualStyleBackColor = false;
+            this.collarColorButton1.Click += new System.EventHandler(this.collarColorButton1_Click);
+            // 
+            // brandColorButton3
+            // 
+            this.brandColorButton3.BackColor = System.Drawing.Color.Yellow;
+            this.brandColorButton3.Location = new System.Drawing.Point(153, 343);
+            this.brandColorButton3.Name = "brandColorButton3";
+            this.brandColorButton3.Size = new System.Drawing.Size(65, 23);
+            this.brandColorButton3.TabIndex = 30;
+            this.brandColorButton3.UseVisualStyleBackColor = false;
+            this.brandColorButton3.Click += new System.EventHandler(this.brandColorButton3_Click);
+            // 
+            // brandColorButton2
+            // 
+            this.brandColorButton2.BackColor = System.Drawing.Color.Cyan;
+            this.brandColorButton2.Location = new System.Drawing.Point(83, 343);
+            this.brandColorButton2.Name = "brandColorButton2";
+            this.brandColorButton2.Size = new System.Drawing.Size(65, 23);
+            this.brandColorButton2.TabIndex = 29;
+            this.brandColorButton2.UseVisualStyleBackColor = false;
+            this.brandColorButton2.Click += new System.EventHandler(this.brandColorButton2_Click);
+            // 
+            // brandColorButton1
+            // 
+            this.brandColorButton1.BackColor = System.Drawing.Color.Maroon;
+            this.brandColorButton1.Location = new System.Drawing.Point(12, 343);
+            this.brandColorButton1.Name = "brandColorButton1";
+            this.brandColorButton1.Size = new System.Drawing.Size(65, 23);
+            this.brandColorButton1.TabIndex = 28;
+            this.brandColorButton1.UseVisualStyleBackColor = false;
+            this.brandColorButton1.Click += new System.EventHandler(this.brandColorButton1_Click);
             // 
             // Form1
             // 
@@ -203,6 +269,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(814, 527);
+            this.Controls.Add(this.brandColorButton3);
+            this.Controls.Add(this.brandColorButton2);
+            this.Controls.Add(this.brandColorButton1);
+            this.Controls.Add(this.collarColorButton3);
+            this.Controls.Add(this.collarColorButton2);
+            this.Controls.Add(this.collarColorButton1);
             this.Controls.Add(this.mainColorButton);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.brandComboBox);
@@ -246,6 +318,12 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox brandComboBox;
         private System.Windows.Forms.Button mainColorButton;
+        private System.Windows.Forms.Button collarColorButton3;
+        private System.Windows.Forms.Button collarColorButton2;
+        private System.Windows.Forms.Button collarColorButton1;
+        private System.Windows.Forms.Button brandColorButton3;
+        private System.Windows.Forms.Button brandColorButton2;
+        private System.Windows.Forms.Button brandColorButton1;
     }
 }
 
