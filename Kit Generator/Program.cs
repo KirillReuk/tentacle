@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Text;
 using ImageMagick;
 using PhotoshopFile;
+using System.Drawing.Imaging;
 
 namespace KitGenerator
 {
@@ -14,15 +15,36 @@ namespace KitGenerator
             foreach (MagickImage layer in imageCollection)
                 collection.Add(layer);
         }
+        public static MagickImage paintMagickImage(this MagickImage image, Color NetColor)
+        {
+            Bitmap bm = image.ToBitmap();
+            byte[] array1D = KitGenerator.Array1DFromBitmap(bm);
+            byte[] resArray1D = new byte[array1D.Length];
+
+            for (int ii = 0; ii < array1D.Length; ii += 4)
+            {
+                Color oldColor = Color.FromArgb(array1D[ii + 3], array1D[ii], array1D[ii + 1], array1D[ii + 2]); //ARGB
+
+                resArray1D[ii] = NetColor.B;
+                resArray1D[ii + 1] = NetColor.G;
+                resArray1D[ii + 2] = NetColor.R;
+                resArray1D[ii + 3] = array1D[ii + 3];
+            }
+
+            Bitmap res = KitGenerator.BitmapFromArray1D(resArray1D, image.Width, image.Height);
+
+
+            return new MagickImage(res);
+        }
     }
 
     public class KitGenerator
     {
-        public string manufacturer { get; set;}
-        public string sponsor { get; set; }
-        public string design { get; set;}
-        public string collar { get; set; }
-        public string brand { get; set; }
+        public string manufacturer;
+        public string sponsor;
+        public string design;
+        public string collar;
+        public string brand;
         string topImagePath, brandsImagePath, collarImagePath, sponsorImagePath, designImagePath, bottomImagePath;
         Color mainColor;
         List<Color> designColors, collarColors, brandColors;
@@ -43,7 +65,7 @@ namespace KitGenerator
 
             designImagePath = "..\\..\\..\\kits\\designs\\" + manufacturer + " " + design.ToString() + ".png";
             sponsorImagePath = "..\\..\\..\\kits\\sponsors\\" + sponsor + ".psd";
-            collarImagePath = "..\\..\\..\\kits\\collars\\" + manufacturer + " " + collar.ToString() + ".png";
+            collarImagePath = "..\\..\\..\\kits\\collars\\" + collar.ToString() + ".png";
             brandsImagePath = "..\\..\\..\\kits\\brands\\" + manufacturer + " " + brand.ToString() + ".png";
 
             mainColor = _mainColor;
@@ -73,38 +95,72 @@ namespace KitGenerator
             return pixelColor;
         }
 
+        public static byte[] Array1DFromBitmap(Bitmap bmp)
+        {
+            if (bmp == null) throw new NullReferenceException("Bitmap is null");
+
+            Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
+            BitmapData data = bmp.LockBits(rect, ImageLockMode.ReadOnly, bmp.PixelFormat);
+            IntPtr ptr = data.Scan0;
+            
+            int numBytes = data.Stride * bmp.Height;
+            byte[] bytes = new byte[numBytes];
+            
+            System.Runtime.InteropServices.Marshal.Copy(ptr, bytes, 0, numBytes);
+
+            bmp.UnlockBits(data);
+
+            return bytes;
+        }
+
+        public static Bitmap BitmapFromArray1D(byte[] bytes, int width, int height)
+        {
+            Bitmap bmp = new Bitmap(width, height, PixelFormat.Format32bppArgb);
+            Rectangle rect = new Rectangle(0, 0, bmp.Width, bmp.Height);
+            BitmapData data = bmp.LockBits(rect, ImageLockMode.ReadWrite, bmp.PixelFormat);
+            IntPtr ptr = data.Scan0;
+
+            int grayBytes = data.Stride * bmp.Height;
+
+            System.Runtime.InteropServices.Marshal.Copy(bytes, 0, ptr, grayBytes);
+
+            bmp.UnlockBits(data);
+            return bmp;
+        }
+
         private Bitmap ColorizeTemplateImage(Bitmap image, Color color1, Color color2, Color color3)
         {
-            Bitmap res = (Bitmap)image.Clone();
+            byte[] array1D = Array1DFromBitmap(image);
+            byte[] resArray1D = new byte[array1D.Length];
 
-            for (int ii = 0; ii < res.Width; ii++)
+            for (int ii = 0; ii < array1D.Length; ii+=4)
             {
-                for (int jj = 0; jj < res.Height; jj++)
+                Color newColor = new Color();
+                Color oldColor = Color.FromArgb(array1D[ii+3], array1D[ii], array1D[ii + 1], array1D[ii + 2]);
+                byte opacity = oldColor.A;
+
+                if (ColorsAreClose(oldColor, templateColor1))
                 {
-                    byte opacity = image.GetPixel(ii, jj).A;
-                    Color oldColor = Color.FromArgb(255, image.GetPixel(ii, jj));
-                    Color newColor = new Color();
-
-                    if (ColorsAreClose(oldColor, templateColor1))
-                    {
-                        newColor = Color.FromArgb(opacity, colorShift(templateColor1, color1, oldColor));
-                    }
-                    else if (ColorsAreClose(oldColor, templateColor2))
-                    {
-                        newColor = Color.FromArgb(opacity, colorShift(templateColor2, color2, oldColor));
-                    }
-                    else if (ColorsAreClose(oldColor, templateColor3))
-                    {
-                        newColor = Color.FromArgb(opacity, colorShift(templateColor3, color3, oldColor));
-                    }
-                    else
-                        newColor = Color.FromArgb(opacity, oldColor);
-
-                    Color x = res.GetPixel(0, 0);
-                    res.SetPixel(ii, jj, newColor);
+                    newColor = Color.FromArgb(opacity, colorShift(templateColor1, color1, oldColor));
                 }
+                else if (ColorsAreClose(oldColor, templateColor2))
+                {
+                    newColor = Color.FromArgb(opacity, colorShift(templateColor2, color2, oldColor));
+                }
+                else if (ColorsAreClose(oldColor, templateColor3))
+                {
+                    newColor = Color.FromArgb(opacity, colorShift(templateColor3, color3, oldColor));
+                }
+                else
+                    newColor = oldColor;
+
+                resArray1D[ii] = newColor.B;
+                resArray1D[ii+1] = newColor.G;
+                resArray1D[ii+2] = newColor.R;
+                resArray1D[ii+3] = newColor.A;
             }
 
+            Bitmap res = BitmapFromArray1D(resArray1D, image.Width, image.Height);
             return res;
         }
         
@@ -115,7 +171,7 @@ namespace KitGenerator
 
             Rectangle offsetRect = new PsdFile(bottomImagePath, Encoding.ASCII).Layers[0].Rect;
 
-            MagickImage frame = paintImage(collection[0], mainColor);
+            MagickImage frame = collection[0].paintMagickImage(mainColor);
             frame.Page = new MagickGeometry(offsetRect.X, offsetRect.Y, 0, 0);
             collection.Add(frame);
             
@@ -152,24 +208,6 @@ namespace KitGenerator
             result.Composite(topImageCollection[5], offsets[4].Item1, offsets[4].Item2, CompositeOperator.No);
             
             return result.ToBitmap();
-        }
-
-        public static bool FilePathHasInvalidChars(string path)
-        {
-            return (!string.IsNullOrEmpty(path) && path.IndexOfAny(System.IO.Path.GetInvalidPathChars()) >= 0);
-        }
-        
-
-        private MagickImage paintImage(MagickImage image, Color NetColor)
-        {
-            Bitmap bm = image.ToBitmap();
-
-            for (int i = 0; i < bm.Width; i++)
-                for (int j = 0; j < bm.Height; j++)
-                    bm.SetPixel(i, j, Color.FromArgb(bm.GetPixel(i, j).A, NetColor.R, NetColor.G, NetColor.B));
-
-            MagickImage res = new MagickImage(bm);
-            return res;
         }
     }
 }

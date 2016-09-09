@@ -75,7 +75,7 @@ namespace KitGenerator
             designComboBox.DataSource = designFiles.Select(x => Path.GetFileNameWithoutExtension(x)).Where(x => x.Split(' ')[0] == manufacturer).Select(x => x.Split(' ')[1]).ToArray();
 
             List<string> collarFiles = new List<string>(Directory.GetFiles("..\\..\\..\\kits\\collars\\"));
-            collarComboBox.DataSource = collarFiles.Select(x => Path.GetFileNameWithoutExtension(x)).Where(x => x.Split(' ')[0] == manufacturer).Select(x => x.Split(' ')[1]).ToArray();
+            collarComboBox.DataSource = collarFiles.Select(x => Path.GetFileNameWithoutExtension(x)).ToArray();
 
             List<string> brandFiles = new List<string>(Directory.GetFiles("..\\..\\..\\kits\\brands\\"));
             brandComboBox.DataSource = brandFiles.Select(x => Path.GetFileNameWithoutExtension(x)).Where(x => x.Split(' ')[0] == manufacturer).Select(x => x.Split(' ')[1]).ToArray();
