@@ -223,4 +223,5 @@ pip-log.txt
 /Kit Generator/Samples
 *.rar
 /ss templates/
+/kits/
 *.ttf

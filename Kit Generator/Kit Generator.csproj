@@ -67,7 +67,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Coloring.cs" />
     <Compile Include="HSLColorClass.cs" />
+    <Compile Include="KitLayer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Samples\Magick.NET\CombiningImages.cs" />
