@@ -83,6 +83,7 @@ namespace KitGenerator
             if (colorDialog.ShowDialog() == DialogResult.OK)
             {
                 colorButton1.BackColor = colorDialog.Color;
+                repaintLayers();
                 previewWithLayer(getSelectedLayer());
             }   
         }
@@ -92,6 +93,7 @@ namespace KitGenerator
             if (colorDialog.ShowDialog() == DialogResult.OK)
             {
                 colorButton2.BackColor = colorDialog.Color;
+                repaintLayers();
                 previewWithLayer(getSelectedLayer());
             }
         }
@@ -101,6 +103,7 @@ namespace KitGenerator
             if (colorDialog.ShowDialog() == DialogResult.OK)
             {
                 colorButton3.BackColor = colorDialog.Color;
+                repaintLayers();
                 previewWithLayer(getSelectedLayer());
             }
         }
@@ -168,7 +171,7 @@ namespace KitGenerator
             {
                 for (int jj = 0; jj < 3; jj++)
                 {
-                    Bitmap img1 = new Bitmap(layerFiles[ii + jj]);
+                    Bitmap img1 = new Bitmap(new Bitmap(layerFiles[ii + jj]), layerDataGridView[0, 0].Size);
                     layerDataGridView[jj, ii / 3].Value = img1;
                     layerDataGridView[jj, ii / 3].Tag = Path.GetFileNameWithoutExtension(layerFiles[ii + jj]);
 
@@ -176,7 +179,8 @@ namespace KitGenerator
                         layerDataGridView[jj, ii / 3].Selected = true;
                 }
             }
-            
+
+            repaintLayers();
             oldPreview = new Bitmap(pictureBox.Image);
         }
 
@@ -249,7 +253,8 @@ namespace KitGenerator
 
         private Bitmap getSelectedLayer()
         {
-            if (layerDataGridView.SelectedCells[0].Tag == null)
+
+            if ((layerDataGridView.SelectedCells.Count == 0)||(layerDataGridView.SelectedCells[0].Tag == null))
                 return null;
             string previewString = "";
             string currentTag = layerDataGridView.SelectedCells[0].Tag.ToString();
@@ -313,6 +318,19 @@ namespace KitGenerator
             }
             RefreshImage();
             tabControl1.SelectTab(0);
+        }
+
+        private void repaintLayers()
+        {
+            foreach (DataGridViewRow row in layerDataGridView.Rows)
+            {
+                foreach (DataGridViewCell cell in row.Cells)
+                {
+                    if (Path.GetFileNameWithoutExtension(blankImagePath) == cell.Tag.ToString())
+                        continue;
+                    cell.Value = Coloring.ColorizeTemplateImage((Bitmap)cell.Value, colorButton1.BackColor, colorButton2.BackColor, colorButton3.BackColor);
+                }
+            }
         }
     }
 }
