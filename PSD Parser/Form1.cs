@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
@@ -12,18 +11,15 @@ namespace KitGenerator
 {
     public partial class Form1 : Form
     {
-        string manufacturer;
-        string brand;
-        string collar;
+        string manufacturer = "";
+        string brand = "";
+        string collar = "";
 
         int currentItemIndex = -1; //manufacturer 1, collar 2, branding 3, layers 4
         string collarLayersPath = "..\\..\\..\\kits\\collars\\";
         string brandLayersPath = "..\\..\\..\\kits\\brands\\"; 
         string manLayersPath = "..\\..\\..\\kits\\manufacturers\\";
         string blankImagePath = "..\\..\\..\\kits\\_blank.png";
-
-        List<Color> designColors = new List<Color>();
-        List<KitLayer> kitLayers = new List<KitLayer>();
 
         Bitmap oldPreview;
 
@@ -36,22 +32,18 @@ namespace KitGenerator
         private void Initialization()
         {
             manDataGridView.Rows.Add();
+            manDataGridView[0, 0].Value = "Select manufacturer...";
             collarDataGridView.Rows.Add();
+            collarDataGridView[0, 0].Value = "Select collar...";
             brandDataGridView.Rows.Add();
+            brandDataGridView[0, 0].Value = "Select branding...";
             RefreshImage();
         }
 
         private void RefreshImage()
         {
-            kitLayers.Clear();
-
-            designColors.Clear();
-
-            designColors.Add(colorButton1.BackColor);
-            designColors.Add(colorButton2.BackColor);
-            designColors.Add(colorButton3.BackColor);
-
-
+            List<KitLayer> kitLayers = new List<KitLayer>();
+            
             if (!String.IsNullOrEmpty(collar))
             {
                 KitLayer collarLayer = new KitLayer(
@@ -142,7 +134,7 @@ namespace KitGenerator
         {
             brand = "";
             RefreshImage();
-            showLayers(brandLayersPath);
+            showLayers(brandLayersPath, brandDataGridView[0, 0].Value.ToString());
             currentItemIndex = 3;
             tabControl1.SelectTab(1);
         }
@@ -151,36 +143,39 @@ namespace KitGenerator
         {
             collar = "";
             RefreshImage();
-            showLayers(collarLayersPath);
+            showLayers(collarLayersPath, collarDataGridView[0, 0].Value.ToString());
             currentItemIndex = 2;
             tabControl1.SelectTab(1);
         }
 
-        private void showLayers(string path)
+        private void showLayers(string path, string selectedElement) //from which folder to show, what to put selection on
         {
-            layerDataGridView.ClearSelection();
-            List<string> layerFiles = new List<string>(Directory.GetFiles(path));
+            layerDataGridView.Rows.Clear();
+
+            List<string> layerFiles = new List<string>(Directory.GetFiles(path).Where(x => Path.GetFileName(x).StartsWith(manufacturer)));
+            layerFiles.Insert(0, blankImagePath);
             while (layerFiles.Count%3!=0)
             {
                 layerFiles.Add(blankImagePath);
             }
-
-            layerDataGridView.Rows.Clear();
+            
             if (layerFiles.Count > 3)
                 layerDataGridView.Rows.Add(layerFiles.Count / 3 - 1);
-            for (int i = 0; i < layerFiles.Count; i += 3)
-            {
-                Bitmap img1 = new Bitmap(layerFiles[i]);
-                Bitmap img2 = new Bitmap(layerFiles[i + 1]);
-                Bitmap img3 = new Bitmap(layerFiles[i + 2]);
 
-                layerDataGridView[0, i / 3].Value = img1;
-                layerDataGridView[0, i / 3].Tag = Path.GetFileNameWithoutExtension(layerFiles[i]);
-                layerDataGridView[1, i / 3].Value = img2;
-                layerDataGridView[1, i / 3].Tag = Path.GetFileNameWithoutExtension(layerFiles[i + 1]);
-                layerDataGridView[2, i / 3].Value = img3;
-                layerDataGridView[2, i / 3].Tag = Path.GetFileNameWithoutExtension(layerFiles[i + 2]);
-            }            
+
+            layerDataGridView.ClearSelection();
+            for (int ii = 0; ii < layerFiles.Count; ii += 3)
+            {
+                for (int jj = 0; jj < 3; jj++)
+                {
+                    Bitmap img1 = new Bitmap(layerFiles[ii + jj]);
+                    layerDataGridView[jj, ii / 3].Value = img1;
+                    layerDataGridView[jj, ii / 3].Tag = Path.GetFileNameWithoutExtension(layerFiles[ii + jj]);
+
+                    if (layerDataGridView[jj, ii / 3].Tag.ToString().EndsWith(selectedElement))
+                        layerDataGridView[jj, ii / 3].Selected = true;
+                }
+            }
             
             oldPreview = new Bitmap(pictureBox.Image);
         }
@@ -189,40 +184,14 @@ namespace KitGenerator
         {
             manufacturer = "";
             RefreshImage();
-            showLayers(manLayersPath);
+            showLayers(manLayersPath, manDataGridView[0, 0].Value.ToString());
             currentItemIndex = 1;
             tabControl1.SelectTab(1);
         }
 
         private void layersDoneButton_Click(object sender, EventArgs e)
         {
-            string currentTag = layerDataGridView.SelectedCells[0].Tag.ToString();
-            if (Path.GetFileNameWithoutExtension(blankImagePath) == (currentTag))
-                return;
-
-            switch (currentItemIndex)
-            {
-                case 1:
-                    manDataGridView[0, 0].Value = currentTag;
-                    manufacturer = manDataGridView[0, 0].Value.ToString();
-                    break;
-                case 2:
-                    collarDataGridView[0, 0].Value = currentTag;
-                    collarDataGridView[1, 0].Style.BackColor = colorButton1.BackColor;
-                    collarDataGridView[2, 0].Style.BackColor = colorButton2.BackColor;
-                    collarDataGridView[3, 0].Style.BackColor = colorButton3.BackColor;
-                    collar = collarDataGridView[0, 0].Value.ToString();
-                    break;
-                case 3:
-                    brandDataGridView[0, 0].Value = currentTag;
-                    brandDataGridView[1, 0].Style.BackColor = colorButton1.BackColor;
-                    brandDataGridView[2, 0].Style.BackColor = colorButton2.BackColor;
-                    brandDataGridView[3, 0].Style.BackColor = colorButton3.BackColor;
-                    brand = brandDataGridView[0, 0].Value.ToString();
-                    break;
-            }
-            RefreshImage();
-            tabControl1.SelectTab(0);
+            acceptLayer();
         }
 
         private void layerDataGridView_MouseLeave(object sender, EventArgs e)
@@ -241,6 +210,9 @@ namespace KitGenerator
         {
             Bitmap image1 = new Bitmap(_image1);
 
+            if ((_image1 == null)|| (image2 == null))
+                return image1;
+            
             float alphaNorm = (float)alpha / 255.0F;
             
             ColorMatrix matrix = new ColorMatrix(new float[][]{
@@ -305,6 +277,42 @@ namespace KitGenerator
                 mainColorButton.BackColor = colorDialog.Color;
                 RefreshImage();
             }
+        }
+
+        private void layerDataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            acceptLayer();
+        }
+
+        private void acceptLayer()
+        {
+            string currentTag = layerDataGridView.SelectedCells[0].Tag.ToString();
+            if (Path.GetFileNameWithoutExtension(blankImagePath) == (currentTag))
+                return;
+
+            switch (currentItemIndex)
+            {
+                case 1:
+                    manDataGridView[0, 0].Value = currentTag;
+                    manufacturer = manDataGridView[0, 0].Value.ToString();
+                    break;
+                case 2:
+                    collarDataGridView[0, 0].Value = currentTag;
+                    collarDataGridView[1, 0].Style.BackColor = colorButton1.BackColor;
+                    collarDataGridView[2, 0].Style.BackColor = colorButton2.BackColor;
+                    collarDataGridView[3, 0].Style.BackColor = colorButton3.BackColor;
+                    collar = collarDataGridView[0, 0].Value.ToString();
+                    break;
+                case 3:
+                    brandDataGridView[0, 0].Value = currentTag;
+                    brandDataGridView[1, 0].Style.BackColor = colorButton1.BackColor;
+                    brandDataGridView[2, 0].Style.BackColor = colorButton2.BackColor;
+                    brandDataGridView[3, 0].Style.BackColor = colorButton3.BackColor;
+                    brand = brandDataGridView[0, 0].Value.ToString();
+                    break;
+            }
+            RefreshImage();
+            tabControl1.SelectTab(0);
         }
     }
 }

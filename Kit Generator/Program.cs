@@ -1,10 +1,9 @@
-﻿using System;
+﻿using ImageMagick;
+using PhotoshopFile;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Text;
-using ImageMagick;
-using PhotoshopFile;
-using System.Drawing.Imaging;
 
 namespace KitGenerator
 {
@@ -93,7 +92,5 @@ namespace KitGenerator
             
             return result.ToBitmap();
         }
-
-        
     }
 }
