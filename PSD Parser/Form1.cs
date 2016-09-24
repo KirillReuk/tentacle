@@ -12,8 +12,9 @@ namespace KitGenerator
     public partial class Form1 : Form
     {
         string manufacturer = "";
-        string brand = "";
-        string collar = "";
+
+        bool brand = false;
+        bool collar = false;
 
         int currentItemIndex = -1; //manufacturer 1, collar 2, branding 3, layers 4
         string collarLayersPath = "..\\..\\..\\kits\\collars\\";
@@ -63,10 +64,10 @@ namespace KitGenerator
                 }
             }
 
-            if (!String.IsNullOrEmpty(brand))
+            if (brand)
             {
                 KitLayer brandLayer = new KitLayer(
-                brand,
+                brandDataGridView[0, 0].Value.ToString(),
                 brandLayersPath + brandDataGridView[0, 0].Value + ".png",
                 new List<Color>(new Color[] { brandDataGridView[1, 0].Style.BackColor, brandDataGridView[2, 0].Style.BackColor, brandDataGridView[3, 0].Style.BackColor }),
                 0,
@@ -74,10 +75,10 @@ namespace KitGenerator
                 kitLayers.Add(brandLayer);
             }
 
-            if (!String.IsNullOrEmpty(collar))
+            if (collar)
             {
                 KitLayer collarLayer = new KitLayer(
-                collar,
+                collarDataGridView[0, 0].Value.ToString(),
                 collarLayersPath + collarDataGridView[0, 0].Value + ".png",
                 new List<Color>(new Color[] { collarDataGridView[1, 0].Style.BackColor, collarDataGridView[2, 0].Style.BackColor, collarDataGridView[3, 0].Style.BackColor }),
                 0,
@@ -157,7 +158,6 @@ namespace KitGenerator
         
         private void collarDataGridView_Click(object sender, EventArgs e)
         {
-            collar = "";
             RefreshImage();
             showLayers(collarLayersPath, collarDataGridView[0, 0].Value.ToString(), new List<Color>(new Color[] { collarDataGridView[1, 0].Style.BackColor, collarDataGridView[2, 0].Style.BackColor , collarDataGridView[3, 0].Style.BackColor}));
             currentItemIndex = 2;
@@ -230,7 +230,7 @@ namespace KitGenerator
         
         private void layersBackButton_Click(object sender, EventArgs e)
         {
-            pictureBox.Image = oldPreview;
+            RefreshImage();
             currentItemIndex = -1;
             tabControl1.SelectTab(0);
         }
@@ -334,14 +334,14 @@ namespace KitGenerator
                     collarDataGridView[1, 0].Style.BackColor = colorButton1.BackColor;
                     collarDataGridView[2, 0].Style.BackColor = colorButton2.BackColor;
                     collarDataGridView[3, 0].Style.BackColor = colorButton3.BackColor;
-                    collar = collarDataGridView[0, 0].Value.ToString();
+                    collar = true;
                     break;
                 case 3:
                     brandDataGridView[0, 0].Value = currentTag;
                     brandDataGridView[1, 0].Style.BackColor = colorButton1.BackColor;
                     brandDataGridView[2, 0].Style.BackColor = colorButton2.BackColor;
                     brandDataGridView[3, 0].Style.BackColor = colorButton3.BackColor;
-                    brand = brandDataGridView[0, 0].Value.ToString();
+                    brand = true;
                     break;
                 case 4:
                     DataGridViewRow row = new DataGridViewRow();
@@ -382,7 +382,6 @@ namespace KitGenerator
 
         private void brandDataGridView_DoubleClick(object sender, EventArgs e)
         {
-            brand = "";
             RefreshImage();
             showLayers(brandLayersPath, brandDataGridView[0, 0].Value.ToString(), new List<Color>(new Color[] { brandDataGridView[1, 0].Style.BackColor, brandDataGridView[2, 0].Style.BackColor, brandDataGridView[3, 0].Style.BackColor }));
             currentItemIndex = 3;
@@ -398,6 +397,7 @@ namespace KitGenerator
                 currentItemIndex = 4;
                 tabControl1.SelectTab(1);
             }
+
         }
 
         private void designDataGridView_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
