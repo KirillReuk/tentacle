@@ -22,6 +22,8 @@ namespace KitGenerator
         string designLayersPath = "..\\..\\..\\kits\\layers\\designs\\";
         string blankImagePath = "..\\..\\..\\kits\\_blank.png";
 
+        List<Color> defaulColorPalette = new List<Color>(new Color[] { Color.White, Color.Blue, Color.Red });
+
         Bitmap oldPreview;
 
         public Form1()
@@ -157,12 +159,12 @@ namespace KitGenerator
         {
             collar = "";
             RefreshImage();
-            showLayers(collarLayersPath, collarDataGridView[0, 0].Value.ToString());
+            showLayers(collarLayersPath, collarDataGridView[0, 0].Value.ToString(), new List<Color>(new Color[] { collarDataGridView[1, 0].Style.BackColor, collarDataGridView[2, 0].Style.BackColor , collarDataGridView[3, 0].Style.BackColor}));
             currentItemIndex = 2;
             tabControl1.SelectTab(1);
         }
 
-        private void showLayers(string path, string selectedElement) //from which folder to show, what to put selection on
+        private void showLayers(string path, string selectedElement, List<Color> colors) //from which folder to show, what to put selection on, colors used
         {
             layerDataGridView.Rows.Clear();
 
@@ -191,6 +193,27 @@ namespace KitGenerator
                 }
             }
 
+            if (colors.Count == 0)
+                colorButton1.Visible = false;
+            else
+            {
+                colorButton1.Visible = true;
+                colorButton1.BackColor = colors[0];
+            }
+            if (colors.Count < 2)
+                colorButton2.Visible = false;
+            else
+            {
+                colorButton2.Visible = true;
+                colorButton2.BackColor = colors[1];
+            }
+            if (colors.Count < 3)
+                colorButton3.Visible = false;
+            else
+            {
+                colorButton3.Visible = true;
+                colorButton3.BackColor = colors[2];
+            }
             repaintLayers();
             oldPreview = new Bitmap(pictureBox.Image);
         }
@@ -342,7 +365,8 @@ namespace KitGenerator
                 {
                     if (Path.GetFileNameWithoutExtension(blankImagePath) == cell.Tag.ToString())
                         continue;
-                    cell.Value = Coloring.ColorizeTemplateImage((Bitmap)cell.Value, colorButton1.BackColor, colorButton2.BackColor, colorButton3.BackColor);
+                    Bitmap bm = new Bitmap((Bitmap)cell.Value);
+                    cell.Value = Coloring.ColorizeTemplateImage(bm, colorButton1.BackColor, colorButton2.BackColor, colorButton3.BackColor);
                 }
             }
         }
@@ -351,7 +375,7 @@ namespace KitGenerator
         {
             manufacturer = "";
             RefreshImage();
-            showLayers(manLayersPath, manDataGridView[0, 0].Value.ToString());
+            showLayers(manLayersPath, manDataGridView[0, 0].Value.ToString(), new List<Color>());
             currentItemIndex = 1;
             tabControl1.SelectTab(1);
         }
@@ -360,7 +384,7 @@ namespace KitGenerator
         {
             brand = "";
             RefreshImage();
-            showLayers(brandLayersPath, brandDataGridView[0, 0].Value.ToString());
+            showLayers(brandLayersPath, brandDataGridView[0, 0].Value.ToString(), new List<Color>(new Color[] { brandDataGridView[1, 0].Style.BackColor, brandDataGridView[2, 0].Style.BackColor, brandDataGridView[3, 0].Style.BackColor }));
             currentItemIndex = 3;
             tabControl1.SelectTab(1);
         }
@@ -370,7 +394,7 @@ namespace KitGenerator
             if (designDataGridView.Rows.Count == e.RowIndex + 1)
             {
                 RefreshImage();
-                showLayers(designLayersPath, "");
+                showLayers(designLayersPath, "", defaulColorPalette);
                 currentItemIndex = 4;
                 tabControl1.SelectTab(1);
             }

@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.runButton = new System.Windows.Forms.Button();
             this.colorDialog = new System.Windows.Forms.ColorDialog();
@@ -205,9 +205,9 @@
             this.brandDataGridView.Location = new System.Drawing.Point(11, 214);
             this.brandDataGridView.Name = "brandDataGridView";
             this.brandDataGridView.RowHeadersVisible = false;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Black;
-            this.brandDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle10.SelectionBackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle10.SelectionForeColor = System.Drawing.Color.Black;
+            this.brandDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle10;
             this.brandDataGridView.RowTemplate.Height = 24;
             this.brandDataGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.brandDataGridView.Size = new System.Drawing.Size(287, 24);
@@ -298,9 +298,9 @@
             this.collarDataGridView.Location = new System.Drawing.Point(11, 167);
             this.collarDataGridView.Name = "collarDataGridView";
             this.collarDataGridView.RowHeadersVisible = false;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Black;
-            this.collarDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle11.SelectionBackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle11.SelectionForeColor = System.Drawing.Color.Black;
+            this.collarDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle11;
             this.collarDataGridView.RowTemplate.Height = 24;
             this.collarDataGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.collarDataGridView.Size = new System.Drawing.Size(287, 24);
@@ -349,9 +349,9 @@
             this.manDataGridView.Location = new System.Drawing.Point(11, 120);
             this.manDataGridView.Name = "manDataGridView";
             this.manDataGridView.RowHeadersVisible = false;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.Black;
-            this.manDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle12.SelectionBackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle12.SelectionForeColor = System.Drawing.Color.Black;
+            this.manDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle12;
             this.manDataGridView.RowTemplate.Height = 24;
             this.manDataGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.manDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -509,7 +509,7 @@
             this.Controls.Add(this.pictureBox);
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";
-            this.Text = "Harambe";
+            this.Text = "SSD";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.designDataGridView)).EndInit();
             this.tabControl1.ResumeLayout(false);
