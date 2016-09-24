@@ -34,7 +34,7 @@
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.runButton = new System.Windows.Forms.Button();
             this.colorDialog = new System.Windows.Forms.ColorDialog();
-            this.dataGridView = new System.Windows.Forms.DataGridView();
+            this.designDataGridView = new System.Windows.Forms.DataGridView();
             this.names = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.color1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.color2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -57,9 +57,6 @@
             this.dataGridViewTextBoxColumn12 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.manDataGridView = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewTextBoxColumn4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.layerTab = new System.Windows.Forms.TabPage();
@@ -73,7 +70,7 @@
             this.Column2 = new System.Windows.Forms.DataGridViewImageColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewImageColumn();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.designDataGridView)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.mainTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.brandDataGridView)).BeginInit();
@@ -105,23 +102,28 @@
             this.runButton.UseVisualStyleBackColor = true;
             this.runButton.Click += new System.EventHandler(this.runButton_Click);
             // 
-            // dataGridView
+            // designDataGridView
             // 
-            this.dataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView.ColumnHeadersVisible = false;
-            this.dataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.designDataGridView.AllowUserToAddRows = false;
+            this.designDataGridView.AllowUserToResizeColumns = false;
+            this.designDataGridView.AllowUserToResizeRows = false;
+            this.designDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.designDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.designDataGridView.ColumnHeadersVisible = false;
+            this.designDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.names,
             this.color1,
             this.color2,
             this.color3});
-            this.dataGridView.Location = new System.Drawing.Point(11, 279);
-            this.dataGridView.Name = "dataGridView";
-            this.dataGridView.RowHeadersVisible = false;
-            this.dataGridView.RowTemplate.Height = 24;
-            this.dataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView.Size = new System.Drawing.Size(287, 255);
-            this.dataGridView.TabIndex = 31;
+            this.designDataGridView.Location = new System.Drawing.Point(11, 279);
+            this.designDataGridView.Name = "designDataGridView";
+            this.designDataGridView.RowHeadersVisible = false;
+            this.designDataGridView.RowTemplate.Height = 24;
+            this.designDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.designDataGridView.Size = new System.Drawing.Size(287, 255);
+            this.designDataGridView.TabIndex = 31;
+            this.designDataGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.designDataGridView_CellDoubleClick);
+            this.designDataGridView.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.designDataGridView_RowsRemoved);
             // 
             // names
             // 
@@ -179,7 +181,7 @@
             this.mainTab.Controls.Add(this.collarDataGridView);
             this.mainTab.Controls.Add(this.manDataGridView);
             this.mainTab.Controls.Add(this.runButton);
-            this.mainTab.Controls.Add(this.dataGridView);
+            this.mainTab.Controls.Add(this.designDataGridView);
             this.mainTab.Controls.Add(this.label5);
             this.mainTab.Controls.Add(this.label4);
             this.mainTab.Location = new System.Drawing.Point(4, 5);
@@ -210,7 +212,7 @@
             this.brandDataGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.brandDataGridView.Size = new System.Drawing.Size(287, 24);
             this.brandDataGridView.TabIndex = 60;
-            this.brandDataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.brandDataGridView_CellClick);
+            this.brandDataGridView.DoubleClick += new System.EventHandler(this.brandDataGridView_DoubleClick);
             // 
             // dataGridViewTextBoxColumn5
             // 
@@ -303,7 +305,7 @@
             this.collarDataGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.collarDataGridView.Size = new System.Drawing.Size(287, 24);
             this.collarDataGridView.TabIndex = 55;
-            this.collarDataGridView.Click += new System.EventHandler(this.collarDataGridView_Click);
+            this.collarDataGridView.DoubleClick += new System.EventHandler(this.collarDataGridView_Click);
             // 
             // dataGridViewTextBoxColumn9
             // 
@@ -343,10 +345,7 @@
             this.manDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.manDataGridView.ColumnHeadersVisible = false;
             this.manDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn1,
-            this.dataGridViewTextBoxColumn2,
-            this.dataGridViewTextBoxColumn3,
-            this.dataGridViewTextBoxColumn4});
+            this.dataGridViewTextBoxColumn1});
             this.manDataGridView.Location = new System.Drawing.Point(11, 120);
             this.manDataGridView.Name = "manDataGridView";
             this.manDataGridView.RowHeadersVisible = false;
@@ -358,7 +357,7 @@
             this.manDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.manDataGridView.Size = new System.Drawing.Size(287, 24);
             this.manDataGridView.TabIndex = 53;
-            this.manDataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.manDataGridView_CellClick);
+            this.manDataGridView.DoubleClick += new System.EventHandler(this.manDataGridView_DoubleClick);
             // 
             // dataGridViewTextBoxColumn1
             // 
@@ -367,30 +366,6 @@
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             this.dataGridViewTextBoxColumn1.ReadOnly = true;
             this.dataGridViewTextBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // dataGridViewTextBoxColumn2
-            // 
-            this.dataGridViewTextBoxColumn2.FillWeight = 10F;
-            this.dataGridViewTextBoxColumn2.HeaderText = "color1";
-            this.dataGridViewTextBoxColumn2.Name = "dataGridViewTextBoxColumn2";
-            this.dataGridViewTextBoxColumn2.ReadOnly = true;
-            this.dataGridViewTextBoxColumn2.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // dataGridViewTextBoxColumn3
-            // 
-            this.dataGridViewTextBoxColumn3.FillWeight = 10F;
-            this.dataGridViewTextBoxColumn3.HeaderText = "color2";
-            this.dataGridViewTextBoxColumn3.Name = "dataGridViewTextBoxColumn3";
-            this.dataGridViewTextBoxColumn3.ReadOnly = true;
-            this.dataGridViewTextBoxColumn3.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            // 
-            // dataGridViewTextBoxColumn4
-            // 
-            this.dataGridViewTextBoxColumn4.FillWeight = 10F;
-            this.dataGridViewTextBoxColumn4.HeaderText = "color3";
-            this.dataGridViewTextBoxColumn4.Name = "dataGridViewTextBoxColumn4";
-            this.dataGridViewTextBoxColumn4.ReadOnly = true;
-            this.dataGridViewTextBoxColumn4.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             // 
             // label5
             // 
@@ -536,7 +511,7 @@
             this.Name = "Form1";
             this.Text = "Harambe";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.designDataGridView)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.mainTab.ResumeLayout(false);
             this.mainTab.PerformLayout();
@@ -554,7 +529,7 @@
         private System.Windows.Forms.PictureBox pictureBox;
         private System.Windows.Forms.Button runButton;
         private System.Windows.Forms.ColorDialog colorDialog;
-        private System.Windows.Forms.DataGridView dataGridView;
+        private System.Windows.Forms.DataGridView designDataGridView;
         private System.Windows.Forms.DataGridViewTextBoxColumn names;
         private System.Windows.Forms.DataGridViewTextBoxColumn color1;
         private System.Windows.Forms.DataGridViewTextBoxColumn color2;
@@ -565,10 +540,6 @@
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.DataGridView manDataGridView;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn2;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn3;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn4;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn9;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn10;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn11;
@@ -592,6 +563,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn6;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn7;
         private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn8;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
     }
 }
 

@@ -19,6 +19,7 @@ namespace KitGenerator
         string collarLayersPath = "..\\..\\..\\kits\\collars\\";
         string brandLayersPath = "..\\..\\..\\kits\\brands\\"; 
         string manLayersPath = "..\\..\\..\\kits\\manufacturers\\";
+        string designLayersPath = "..\\..\\..\\kits\\layers\\designs\\";
         string blankImagePath = "..\\..\\..\\kits\\_blank.png";
 
         Bitmap oldPreview;
@@ -37,6 +38,8 @@ namespace KitGenerator
             collarDataGridView[0, 0].Value = "Select collar...";
             brandDataGridView.Rows.Add();
             brandDataGridView[0, 0].Value = "Select branding...";
+            designDataGridView.Rows.Add();
+            designDataGridView[0, 0].Value = "Add layer...";
             RefreshImage();
         }
 
@@ -44,15 +47,18 @@ namespace KitGenerator
         {
             List<KitLayer> kitLayers = new List<KitLayer>();
             
-            if (!String.IsNullOrEmpty(collar))
+            foreach (DataGridViewRow designRow in designDataGridView.Rows)
             {
-                KitLayer collarLayer = new KitLayer(
-                collar,
-                collarLayersPath + collarDataGridView[0, 0].Value + ".png",
-                new List<Color>(new Color[] { collarDataGridView[1, 0].Style.BackColor, collarDataGridView[2, 0].Style.BackColor, collarDataGridView[3, 0].Style.BackColor }),
-                0,
-                new Rectangle());
-                kitLayers.Add(collarLayer);
+                if ((designRow.Cells[0].Value != null) && (designRow.Cells[0].Value.ToString() != "Add layer..."))//add proper checking
+                {
+                    KitLayer designLayer = new KitLayer(
+                        designRow.Cells[0].Value.ToString(),
+                        designLayersPath + designRow.Cells[0].Value + ".png",
+                        new List<Color>(new Color[] { designRow.Cells[1].Style.BackColor, designRow.Cells[2].Style.BackColor, designRow.Cells[3].Style.BackColor }),
+                        0,
+                        new Rectangle());
+                    kitLayers.Add(designLayer);
+                }
             }
 
             if (!String.IsNullOrEmpty(brand))
@@ -65,7 +71,18 @@ namespace KitGenerator
                 new Rectangle());
                 kitLayers.Add(brandLayer);
             }
-            
+
+            if (!String.IsNullOrEmpty(collar))
+            {
+                KitLayer collarLayer = new KitLayer(
+                collar,
+                collarLayersPath + collarDataGridView[0, 0].Value + ".png",
+                new List<Color>(new Color[] { collarDataGridView[1, 0].Style.BackColor, collarDataGridView[2, 0].Style.BackColor, collarDataGridView[3, 0].Style.BackColor }),
+                0,
+                new Rectangle());
+                kitLayers.Add(collarLayer);
+            }
+
             Color baseColor = mainColorButton.BackColor;
 
             KitGenerator kg = new KitGenerator(manufacturer, baseColor, kitLayers);
@@ -127,21 +144,15 @@ namespace KitGenerator
                 case 3:
                     previewString = brandLayersPath + currentTag + ".png";
                     break;
+                case 4:
+                    previewString = designLayersPath + currentTag + ".png";
+                    break;
             }
             Bitmap img = Coloring.ColorizeTemplateImage(new Bitmap(previewString), colorButton1.BackColor, colorButton2.BackColor, colorButton3.BackColor);
             if (File.Exists(previewString))
                 previewWithLayer(img);
         }
-
-        private void brandDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            brand = "";
-            RefreshImage();
-            showLayers(brandLayersPath, brandDataGridView[0, 0].Value.ToString());
-            currentItemIndex = 3;
-            tabControl1.SelectTab(1);
-        }
-
+        
         private void collarDataGridView_Click(object sender, EventArgs e)
         {
             collar = "";
@@ -183,16 +194,7 @@ namespace KitGenerator
             repaintLayers();
             oldPreview = new Bitmap(pictureBox.Image);
         }
-
-        private void manDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            manufacturer = "";
-            RefreshImage();
-            showLayers(manLayersPath, manDataGridView[0, 0].Value.ToString());
-            currentItemIndex = 1;
-            tabControl1.SelectTab(1);
-        }
-
+        
         private void layersDoneButton_Click(object sender, EventArgs e)
         {
             acceptLayer();
@@ -271,6 +273,9 @@ namespace KitGenerator
                 case 3:
                     previewString = brandLayersPath + currentTag + ".png";
                     break;
+                case 4:
+                    previewString = designLayersPath + currentTag + ".png";
+                    break;
             }
             return Coloring.ColorizeTemplateImage(new Bitmap(previewString), colorButton1.BackColor, colorButton2.BackColor, colorButton3.BackColor);
         }
@@ -315,6 +320,15 @@ namespace KitGenerator
                     brandDataGridView[3, 0].Style.BackColor = colorButton3.BackColor;
                     brand = brandDataGridView[0, 0].Value.ToString();
                     break;
+                case 4:
+                    DataGridViewRow row = new DataGridViewRow();
+                    row.CreateCells(designDataGridView);
+                    row.Cells[0].Value = currentTag;
+                    row.Cells[1].Style.BackColor = colorButton1.BackColor;
+                    row.Cells[2].Style.BackColor = colorButton2.BackColor;
+                    row.Cells[3].Style.BackColor = colorButton3.BackColor;
+                    designDataGridView.Rows.Insert(designDataGridView.RowCount - 1, row);
+                    break;
             }
             RefreshImage();
             tabControl1.SelectTab(0);
@@ -331,6 +345,40 @@ namespace KitGenerator
                     cell.Value = Coloring.ColorizeTemplateImage((Bitmap)cell.Value, colorButton1.BackColor, colorButton2.BackColor, colorButton3.BackColor);
                 }
             }
+        }
+        
+        private void manDataGridView_DoubleClick(object sender, EventArgs e)
+        {
+            manufacturer = "";
+            RefreshImage();
+            showLayers(manLayersPath, manDataGridView[0, 0].Value.ToString());
+            currentItemIndex = 1;
+            tabControl1.SelectTab(1);
+        }
+
+        private void brandDataGridView_DoubleClick(object sender, EventArgs e)
+        {
+            brand = "";
+            RefreshImage();
+            showLayers(brandLayersPath, brandDataGridView[0, 0].Value.ToString());
+            currentItemIndex = 3;
+            tabControl1.SelectTab(1);
+        }
+
+        private void designDataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (designDataGridView.Rows.Count == e.RowIndex + 1)
+            {
+                RefreshImage();
+                showLayers(designLayersPath, "");
+                currentItemIndex = 4;
+                tabControl1.SelectTab(1);
+            }
+        }
+
+        private void designDataGridView_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
+        {
+            RefreshImage();
         }
     }
 }
