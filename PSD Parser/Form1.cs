@@ -22,10 +22,10 @@ namespace KitGenerator
         string manLayersPath = "..\\..\\..\\kits\\manufacturers\\";
         string designLayersPath = "..\\..\\..\\kits\\layers\\designs\\";
         string blankImagePath = "..\\..\\..\\kits\\_blank.png";
-
         List<Color> defaulColorPalette = new List<Color>(new Color[] { Color.White, Color.Blue, Color.Red });
-
+        
         Bitmap oldPreview;
+        int layerEdited = -1; 
 
         public Form1()
         {
@@ -350,7 +350,13 @@ namespace KitGenerator
                     row.Cells[1].Style.BackColor = colorButton1.BackColor;
                     row.Cells[2].Style.BackColor = colorButton2.BackColor;
                     row.Cells[3].Style.BackColor = colorButton3.BackColor;
-                    designDataGridView.Rows.Insert(designDataGridView.RowCount - 1, row);
+                    if (layerEdited >= 0)
+                    {
+                        designDataGridView.Rows.RemoveAt(layerEdited);
+                        designDataGridView.Rows.Insert(layerEdited, row);
+                    }
+                    else
+                        designDataGridView.Rows.Insert(designDataGridView.RowCount - 1, row);
                     break;
             }
             RefreshImage();
@@ -392,12 +398,18 @@ namespace KitGenerator
         {
             if (designDataGridView.Rows.Count == e.RowIndex + 1)
             {
-                RefreshImage();
                 showLayers(designLayersPath, "", defaulColorPalette);
+                layerEdited = -1;
                 currentItemIndex = 4;
                 tabControl1.SelectTab(1);
             }
-
+            else
+            {
+                showLayers(designLayersPath, designDataGridView[e.ColumnIndex, e.RowIndex].Value.ToString(), new List<Color>(new Color[] { designDataGridView[1, 0].Style.BackColor, designDataGridView[2, 0].Style.BackColor, designDataGridView[3, 0].Style.BackColor }));
+                layerEdited = e.RowIndex;
+                currentItemIndex = 4;
+                tabControl1.SelectTab(1);
+            }
         }
 
         private void designDataGridView_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
