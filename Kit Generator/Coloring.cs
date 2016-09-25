@@ -1,14 +1,36 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Imaging;
+using System.Linq;
 
 namespace KitGenerator
 {
-    public static class Coloring
+    public static unsafe class Coloring
     {
         readonly static Color templateColor1 = Color.Magenta;
         readonly static Color templateColor2 = Color.Cyan;
         readonly static Color templateColor3 = Color.Yellow;
+
+        public static int GetNumberOfColors(Bitmap image)
+        {
+            bool[] cols = new bool[3];
+            byte[] array1D = Array1DFromBitmap(image);
+            
+            for (int ii = 0; ii < array1D.Length; ii =+ 4)
+            {
+                Color theColor = Color.FromArgb(array1D[ii + 3], array1D[ii], array1D[ii + 1], array1D[ii + 2]);
+                if (ColorsAreClose(templateColor1, theColor))
+                    cols[1] = true;
+                if (ColorsAreClose(templateColor2, theColor))
+                    cols[2] = true;
+                if (ColorsAreClose(templateColor3, theColor))
+                    cols[3] = true;
+
+                if (cols[1] && cols[2] && cols[3])
+                    return 3;
+            }
+            return cols.Count(c => c);
+        }
 
         public static bool ColorsAreClose(Color colorA, Color colorB, int threshold = 250)
         {
