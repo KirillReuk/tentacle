@@ -25,7 +25,9 @@ namespace KitGenerator
         List<Color> defaulColorPalette = new List<Color>(new Color[] { Color.White, Color.Blue, Color.Red });
         
         Bitmap oldPreview;
-        int layerEdited = -1; 
+        int layerEdited = -1;
+
+        string currentFilePath = "";
 
         public Form1()
         {
@@ -35,14 +37,26 @@ namespace KitGenerator
 
         private void Initialization()
         {
+            manDataGridView.Rows.Clear();
             manDataGridView.Rows.Add();
             manDataGridView[0, 0].Value = "Select manufacturer...";
+
+            collar = false;
+            collarDataGridView.Rows.Clear();
             collarDataGridView.Rows.Add();
             collarDataGridView[0, 0].Value = "Select collar...";
+
+            brand = false;
+            brandDataGridView.Rows.Clear();
             brandDataGridView.Rows.Add();
             brandDataGridView[0, 0].Value = "Select branding...";
+
+            designDataGridView.Rows.Clear();
             designDataGridView.Rows.Add();
             designDataGridView[0, 0].Value = "Add layer...";
+
+            currentFilePath = "";
+
             RefreshImage();
         }
 
@@ -415,6 +429,39 @@ namespace KitGenerator
         private void designDataGridView_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
         {
             RefreshImage();
+        }
+
+        private void newToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Initialization();
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (currentFilePath == "")
+                saveAs();
+            else
+                pictureBox.Image.Save(currentFilePath);
+        }
+
+        private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            saveAs();
+        }
+
+        private void saveAs()
+        {
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                RefreshImage();
+                currentFilePath = saveFileDialog.FileName;
+                pictureBox.Image.Save(currentFilePath);
+            }
         }
     }
 }

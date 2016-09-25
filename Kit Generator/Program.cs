@@ -61,7 +61,7 @@ namespace KitGenerator
             MagickImageCollection collection = new MagickImageCollection(bottomImagePath);
 
             Rectangle offsetRect = new PsdFile(bottomImagePath, Encoding.ASCII).Layers[0].Rect;
-
+            
             MagickImage frame = collection[0].paintMagickImage(mainColor);
             frame.Page = new MagickGeometry(offsetRect.X, offsetRect.Y, 0, 0);
             collection.Add(frame);
@@ -91,6 +91,8 @@ namespace KitGenerator
             result.Composite(topImageCollection[5], offsets[4].Item1, offsets[4].Item2, CompositeOperator.No);
             
             return result.ToBitmap();
+
+            
         }
     }
 }
