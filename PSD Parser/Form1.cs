@@ -12,13 +12,11 @@ namespace KitGenerator
     public partial class Form1 : Form
     {
         string manufacturer = "";
-
-        bool brandIsSelected = false;
+        
         bool collarIsSelected = false;
 
-        int currentItemIndex = -1; //manufacturer 1, collar 2, branding 3, layers 4
+        int currentItemIndex = -1; //manufacturer 1, collar 2,  layers 4
         const string collarLayersPath = "..\\..\\..\\kits\\collars\\";
-        const string brandLayersPath = "..\\..\\..\\kits\\brands\\";
         const string manLayersPath = "..\\..\\..\\kits\\manufacturers\\";
         const string designLayersPath = "..\\..\\..\\kits\\layers\\";
         const string blankImagePath = "..\\..\\..\\kits\\_blank.png";
@@ -26,7 +24,6 @@ namespace KitGenerator
 
         const string collarWelcome = "Select collar...";
         const string manWelcome = "Select manufacturer...";
-        const string brandWelcome = "Select branding...";
         const string designWelcome = "Add layer...";
 
         Bitmap oldPreview;
@@ -51,12 +48,7 @@ namespace KitGenerator
             collarDataGridView.Rows.Clear();
             collarDataGridView.Rows.Add();
             collarDataGridView[0, 0].Value = collarWelcome;
-
-            brandIsSelected = false;
-            brandDataGridView.Rows.Clear();
-            brandDataGridView.Rows.Add();
-            brandDataGridView[0, 0].Value = brandWelcome;
-
+            
             designDataGridView.Rows.Clear();
             designDataGridView.Rows.Add();
             designDataGridView[0, 0].Value = designWelcome;
@@ -82,17 +74,6 @@ namespace KitGenerator
                 kitLayers.Add(designLayer);
             }
             
-            if (brandIsSelected)
-            {
-                KitLayer brandLayer = new KitLayer(
-                brandDataGridView[0, 0].Value.ToString(),
-                brandLayersPath + brandDataGridView[0, 0].Value + ".png",
-                new List<Color>(new Color[] { brandDataGridView[1, 0].Style.BackColor, brandDataGridView[2, 0].Style.BackColor, brandDataGridView[3, 0].Style.BackColor }),
-                0,
-                new Rectangle());
-                kitLayers.Add(brandLayer);
-            }
-
             if (collarIsSelected)
             {
                 KitLayer collarLayer = new KitLayer(
@@ -161,9 +142,6 @@ namespace KitGenerator
                     return;
                 case 2:
                     previewString = collarLayersPath + layerTabControl.SelectedTab.Text + "\\"+ currentTag + ".png";
-                    break;
-                case 3:
-                    previewString = brandLayersPath + layerTabControl.SelectedTab.Text + "\\" + currentTag + ".png";
                     break;
                 case 4:
                     previewString = designLayersPath + layerTabControl.SelectedTab.Text + "\\" + currentTag + ".png";
@@ -313,7 +291,6 @@ namespace KitGenerator
 
         private Bitmap getSelectedLayer()
         {
-
             if ((layerDataGridView.SelectedCells.Count == 0)||(layerDataGridView.SelectedCells[0].Tag == null))
                 return null;
             string previewString = "";
@@ -327,9 +304,6 @@ namespace KitGenerator
                     return new Bitmap(1, 1);
                 case 2:
                     previewString = collarLayersPath + layerTabControl.SelectedTab.Text + "\\" + currentTag + ".png";
-                    break;
-                case 3:
-                    previewString = brandLayersPath + layerTabControl.SelectedTab.Text + "\\" + currentTag + ".png";
                     break;
                 case 4:
                     previewString = designLayersPath + layerTabControl.SelectedTab.Text + "\\" + currentTag + ".png";
@@ -370,13 +344,6 @@ namespace KitGenerator
                     collarDataGridView[2, 0].Style.BackColor = colorButton2.BackColor;
                     collarDataGridView[3, 0].Style.BackColor = colorButton3.BackColor;
                     collarIsSelected = true;
-                    break;
-                case 3:
-                    brandDataGridView[0, 0].Value = currentTag;
-                    brandDataGridView[1, 0].Style.BackColor = colorButton1.BackColor;
-                    brandDataGridView[2, 0].Style.BackColor = colorButton2.BackColor;
-                    brandDataGridView[3, 0].Style.BackColor = colorButton3.BackColor;
-                    brandIsSelected = true;
                     break;
                 case 4:
                     DataGridViewRow row = new DataGridViewRow();
@@ -420,15 +387,7 @@ namespace KitGenerator
             currentItemIndex = 1;
             mainTabControl.SelectTab(1);
         }
-
-        private void brandDataGridView_DoubleClick(object sender, EventArgs e)
-        {
-            RefreshImage();
-            showLayers(brandLayersPath, brandDataGridView[0, 0].Value.ToString(), new List<Color>(new Color[] { brandDataGridView[1, 0].Style.BackColor, brandDataGridView[2, 0].Style.BackColor, brandDataGridView[3, 0].Style.BackColor }));
-            currentItemIndex = 3;
-            mainTabControl.SelectTab(1);
-        }
-
+        
         private void designDataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (designDataGridView.Rows.Count == e.RowIndex + 1)
