@@ -13,17 +13,23 @@ namespace KitGenerator
     {
         string manufacturer = "";
 
-        bool brand = false;
-        bool collar = false;
+        bool brandIsSelected = false;
+        bool collarIsSelected = false;
+        bool designIsSelected = false;
 
         int currentItemIndex = -1; //manufacturer 1, collar 2, branding 3, layers 4
-        string collarLayersPath = "..\\..\\..\\kits\\collars\\";
-        string brandLayersPath = "..\\..\\..\\kits\\brands\\"; 
-        string manLayersPath = "..\\..\\..\\kits\\manufacturers\\";
-        string designLayersPath = "..\\..\\..\\kits\\layers\\designs\\";
-        string blankImagePath = "..\\..\\..\\kits\\_blank.png";
-        List<Color> defaulColorPalette = new List<Color>(new Color[] { Color.White, Color.Blue, Color.Red });
-        
+        const string collarLayersPath = "..\\..\\..\\kits\\collars\\";
+        const string brandLayersPath = "..\\..\\..\\kits\\brands\\";
+        const string manLayersPath = "..\\..\\..\\kits\\manufacturers\\";
+        const string designLayersPath = "..\\..\\..\\kits\\layers\\designs\\";
+        const string blankImagePath = "..\\..\\..\\kits\\_blank.png";
+        List<Color> defaultColorPalette = new List<Color>(new Color[] { Color.White, Color.Blue, Color.Red });
+
+        const string collarWelcome = "Select collar...";
+        const string manWelcome = "Select manufacturer...";
+        const string brandWelcome = "Select branding...";
+        const string designWelcome = "Add layer...";
+
         Bitmap oldPreview;
         int layerEdited = -1;
 
@@ -39,21 +45,22 @@ namespace KitGenerator
         {
             manDataGridView.Rows.Clear();
             manDataGridView.Rows.Add();
-            manDataGridView[0, 0].Value = "Select manufacturer...";
+            manDataGridView[0, 0].Value = manWelcome;
 
-            collar = false;
+            collarIsSelected = false;
             collarDataGridView.Rows.Clear();
             collarDataGridView.Rows.Add();
-            collarDataGridView[0, 0].Value = "Select collar...";
+            collarDataGridView[0, 0].Value = collarWelcome;
 
-            brand = false;
+            brandIsSelected = false;
             brandDataGridView.Rows.Clear();
             brandDataGridView.Rows.Add();
-            brandDataGridView[0, 0].Value = "Select branding...";
+            brandDataGridView[0, 0].Value = brandWelcome;
 
+            designIsSelected = false;
             designDataGridView.Rows.Clear();
             designDataGridView.Rows.Add();
-            designDataGridView[0, 0].Value = "Add layer...";
+            designDataGridView[0, 0].Value = designWelcome;
 
             currentFilePath = "";
 
@@ -64,9 +71,9 @@ namespace KitGenerator
         {
             List<KitLayer> kitLayers = new List<KitLayer>();
             
-            foreach (DataGridViewRow designRow in designDataGridView.Rows)
+            if (designIsSelected)
             {
-                if ((designRow.Cells[0].Value != null) && (designRow.Cells[0].Value.ToString() != "Add layer..."))//add proper checking
+                foreach (DataGridViewRow designRow in designDataGridView.Rows)
                 {
                     KitLayer designLayer = new KitLayer(
                         designRow.Cells[0].Value.ToString(),
@@ -77,8 +84,8 @@ namespace KitGenerator
                     kitLayers.Add(designLayer);
                 }
             }
-
-            if (brand)
+            
+            if (brandIsSelected)
             {
                 KitLayer brandLayer = new KitLayer(
                 brandDataGridView[0, 0].Value.ToString(),
@@ -89,7 +96,7 @@ namespace KitGenerator
                 kitLayers.Add(brandLayer);
             }
 
-            if (collar)
+            if (collarIsSelected)
             {
                 KitLayer collarLayer = new KitLayer(
                 collarDataGridView[0, 0].Value.ToString(),
@@ -348,14 +355,14 @@ namespace KitGenerator
                     collarDataGridView[1, 0].Style.BackColor = colorButton1.BackColor;
                     collarDataGridView[2, 0].Style.BackColor = colorButton2.BackColor;
                     collarDataGridView[3, 0].Style.BackColor = colorButton3.BackColor;
-                    collar = true;
+                    collarIsSelected = true;
                     break;
                 case 3:
                     brandDataGridView[0, 0].Value = currentTag;
                     brandDataGridView[1, 0].Style.BackColor = colorButton1.BackColor;
                     brandDataGridView[2, 0].Style.BackColor = colorButton2.BackColor;
                     brandDataGridView[3, 0].Style.BackColor = colorButton3.BackColor;
-                    brand = true;
+                    brandIsSelected = true;
                     break;
                 case 4:
                     DataGridViewRow row = new DataGridViewRow();
@@ -364,6 +371,7 @@ namespace KitGenerator
                     row.Cells[1].Style.BackColor = colorButton1.BackColor;
                     row.Cells[2].Style.BackColor = colorButton2.BackColor;
                     row.Cells[3].Style.BackColor = colorButton3.BackColor;
+                    designIsSelected = true;
                     if (layerEdited >= 0)
                     {
                         designDataGridView.Rows.RemoveAt(layerEdited);
@@ -412,7 +420,7 @@ namespace KitGenerator
         {
             if (designDataGridView.Rows.Count == e.RowIndex + 1)
             {
-                showLayers(designLayersPath, "", defaulColorPalette);
+                showLayers(designLayersPath, "", defaultColorPalette);
                 layerEdited = -1;
                 currentItemIndex = 4;
                 tabControl1.SelectTab(1);
@@ -461,6 +469,16 @@ namespace KitGenerator
                 RefreshImage();
                 currentFilePath = saveFileDialog.FileName;
                 pictureBox.Image.Save(currentFilePath);
+            }
+        }
+
+        private void designDataGridView_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
+        {
+            if (designDataGridView.RowCount == 0)
+            {
+                designIsSelected = false;
+                designDataGridView.Rows.Add();
+                designDataGridView[0, 0].Value = designWelcome;
             }
         }
     }

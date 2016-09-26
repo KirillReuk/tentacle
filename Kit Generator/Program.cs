@@ -31,8 +31,7 @@ namespace KitGenerator
             }
 
             Bitmap res = Coloring.BitmapFromArray1D(resArray1D, image.Width, image.Height);
-
-
+            
             return new MagickImage(res);
         }
     }
@@ -91,8 +90,6 @@ namespace KitGenerator
             result.Composite(topImageCollection[5], offsets[4].Item1, offsets[4].Item2, CompositeOperator.No);
             
             return result.ToBitmap();
-
-            
         }
     }
 }
