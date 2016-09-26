@@ -20,7 +20,7 @@ namespace KitGenerator
         const string collarLayersPath = "..\\..\\..\\kits\\collars\\";
         const string brandLayersPath = "..\\..\\..\\kits\\brands\\";
         const string manLayersPath = "..\\..\\..\\kits\\manufacturers\\";
-        const string designLayersPath = "..\\..\\..\\kits\\layers\\designs\\";
+        const string designLayersPath = "..\\..\\..\\kits\\layers\\";
         const string blankImagePath = "..\\..\\..\\kits\\_blank.png";
         List<Color> defaultColorPalette = new List<Color>(new Color[] { Color.White, Color.Blue, Color.Red });
 
@@ -31,6 +31,7 @@ namespace KitGenerator
 
         Bitmap oldPreview;
         int layerEdited = -1;
+        string currentPath = "";
 
         string currentFilePath = "";
 
@@ -74,7 +75,7 @@ namespace KitGenerator
                 DataGridViewRow designRow = designDataGridView.Rows[ii];
                 KitLayer designLayer = new KitLayer(
                     designRow.Cells[0].Value.ToString(),
-                    designLayersPath + designRow.Cells[0].Value + ".png",
+                    designLayersPath + layerTabControl.SelectedTab.Text + "\\" + designRow.Cells[0].Value + ".png",
                     new List<Color>(new Color[] { designRow.Cells[1].Style.BackColor, designRow.Cells[2].Style.BackColor, designRow.Cells[3].Style.BackColor }),
                     0,
                     new Rectangle());
@@ -159,13 +160,13 @@ namespace KitGenerator
                 case 1:
                     return;
                 case 2:
-                    previewString = collarLayersPath + currentTag + ".png";
+                    previewString = collarLayersPath + layerTabControl.SelectedTab.Text + "\\"+ currentTag + ".png";
                     break;
                 case 3:
-                    previewString = brandLayersPath + currentTag + ".png";
+                    previewString = brandLayersPath + layerTabControl.SelectedTab.Text + "\\" + currentTag + ".png";
                     break;
                 case 4:
-                    previewString = designLayersPath + currentTag + ".png";
+                    previewString = designLayersPath + layerTabControl.SelectedTab.Text + "\\" + currentTag + ".png";
                     break;
             }
             Bitmap img = Coloring.ColorizeTemplateImage(new Bitmap(previewString), colorButton1.BackColor, colorButton2.BackColor, colorButton3.BackColor);
@@ -178,20 +179,20 @@ namespace KitGenerator
             RefreshImage();
             showLayers(collarLayersPath, collarDataGridView[0, 0].Value.ToString(), new List<Color>(new Color[] { collarDataGridView[1, 0].Style.BackColor, collarDataGridView[2, 0].Style.BackColor , collarDataGridView[3, 0].Style.BackColor}));
             currentItemIndex = 2;
-            tabControl1.SelectTab(1);
+            mainTabControl.SelectTab(1);
         }
 
-        private void showLayers(string path, string selectedElement, List<Color> colors) //from which folder to show, what to put selection on, colors used
+        private void refreshLayerTab(string path)
         {
             layerDataGridView.Rows.Clear();
 
             List<string> layerFiles = new List<string>(Directory.GetFiles(path).Where(x => Path.GetFileName(x).StartsWith(manufacturer)));
             layerFiles.Insert(0, blankImagePath);
-            while (layerFiles.Count%3!=0)
+            while (layerFiles.Count % 3 != 0)
             {
                 layerFiles.Add(blankImagePath);
             }
-            
+
             if (layerFiles.Count > 3)
                 layerDataGridView.Rows.Add(layerFiles.Count / 3 - 1);
 
@@ -205,10 +206,27 @@ namespace KitGenerator
                     layerDataGridView[jj, ii / 3].Value = img1;
                     layerDataGridView[jj, ii / 3].Tag = Path.GetFileNameWithoutExtension(layerFiles[ii + jj]);
 
-                    if (layerDataGridView[jj, ii / 3].Tag.ToString().EndsWith(selectedElement))
-                        layerDataGridView[jj, ii / 3].Selected = true;
+                    //if (layerDataGridView[jj, ii / 3].Tag.ToString().EndsWith(selectedElement))
+                    //    layerDataGridView[jj, ii / 3].Selected = true;
                 }
             }
+            
+            repaintLayers();
+            oldPreview = new Bitmap(pictureBox.Image);
+        }
+
+        private void showLayers(string path, string selectedElement, List<Color> colors) //from which folder to show, what to put selection on, colors used
+        {
+            layerTabControl.TabPages.Clear();
+
+            currentPath = path;
+            List<string> directories = new List<string>(Directory.GetDirectories(path).Select(x => Path.GetFileName(x)));
+            foreach (string directory in directories)
+            {
+                layerTabControl.TabPages.Add(directory);
+            }
+
+            layerTabControl.SelectTab(0);
 
             if (colors.Count == 0)
                 colorButton1.Visible = false;
@@ -231,8 +249,8 @@ namespace KitGenerator
                 colorButton3.Visible = true;
                 colorButton3.BackColor = colors[2];
             }
-            repaintLayers();
-            oldPreview = new Bitmap(pictureBox.Image);
+
+            refreshLayerTab(path + layerTabControl.SelectedTab.Text);
         }
         
         private void layersDoneButton_Click(object sender, EventArgs e)
@@ -249,7 +267,7 @@ namespace KitGenerator
         {
             RefreshImage();
             currentItemIndex = -1;
-            tabControl1.SelectTab(0);
+            mainTabControl.SelectTab(0);
         }
         
         private static Bitmap MatrixBlend(Bitmap _image1, Bitmap image2, byte alpha = 255)
@@ -308,13 +326,13 @@ namespace KitGenerator
                 case 1:
                     return new Bitmap(1, 1);
                 case 2:
-                    previewString = collarLayersPath + currentTag + ".png";
+                    previewString = collarLayersPath + layerTabControl.SelectedTab.Text + "\\" + currentTag + ".png";
                     break;
                 case 3:
-                    previewString = brandLayersPath + currentTag + ".png";
+                    previewString = brandLayersPath + layerTabControl.SelectedTab.Text + "\\" + currentTag + ".png";
                     break;
                 case 4:
-                    previewString = designLayersPath + currentTag + ".png";
+                    previewString = designLayersPath + layerTabControl.SelectedTab.Text + "\\" + currentTag + ".png";
                     break;
             }
             return Coloring.ColorizeTemplateImage(new Bitmap(previewString), colorButton1.BackColor, colorButton2.BackColor, colorButton3.BackColor);
@@ -377,7 +395,7 @@ namespace KitGenerator
                     break;
             }
             RefreshImage();
-            tabControl1.SelectTab(0);
+            mainTabControl.SelectTab(0);
         }
 
         private void repaintLayers()
@@ -400,7 +418,7 @@ namespace KitGenerator
             RefreshImage();
             showLayers(manLayersPath, manDataGridView[0, 0].Value.ToString(), new List<Color>());
             currentItemIndex = 1;
-            tabControl1.SelectTab(1);
+            mainTabControl.SelectTab(1);
         }
 
         private void brandDataGridView_DoubleClick(object sender, EventArgs e)
@@ -408,7 +426,7 @@ namespace KitGenerator
             RefreshImage();
             showLayers(brandLayersPath, brandDataGridView[0, 0].Value.ToString(), new List<Color>(new Color[] { brandDataGridView[1, 0].Style.BackColor, brandDataGridView[2, 0].Style.BackColor, brandDataGridView[3, 0].Style.BackColor }));
             currentItemIndex = 3;
-            tabControl1.SelectTab(1);
+            mainTabControl.SelectTab(1);
         }
 
         private void designDataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
@@ -417,16 +435,15 @@ namespace KitGenerator
             {
                 showLayers(designLayersPath, "", defaultColorPalette);
                 layerEdited = -1;
-                currentItemIndex = 4;
-                tabControl1.SelectTab(1);
             }
             else
             {
                 showLayers(designLayersPath, designDataGridView[e.ColumnIndex, e.RowIndex].Value.ToString(), new List<Color>(new Color[] { designDataGridView[1, 0].Style.BackColor, designDataGridView[2, 0].Style.BackColor, designDataGridView[3, 0].Style.BackColor }));
                 layerEdited = e.RowIndex;
-                currentItemIndex = 4;
-                tabControl1.SelectTab(1);
             }
+
+            currentItemIndex = 4;
+            mainTabControl.SelectTab(1);
         }
 
         private void designDataGridView_RowsRemoved(object sender, DataGridViewRowsRemovedEventArgs e)
@@ -473,6 +490,11 @@ namespace KitGenerator
             {
                 e.Cancel = true;
             }
+        }
+
+        private void layerTabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            refreshLayerTab(currentPath + "\\" + layerTabControl.SelectedTab.Name);
         }
     }
 }
