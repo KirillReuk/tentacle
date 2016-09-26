@@ -15,7 +15,6 @@ namespace KitGenerator
 
         bool brandIsSelected = false;
         bool collarIsSelected = false;
-        bool designIsSelected = false;
 
         int currentItemIndex = -1; //manufacturer 1, collar 2, branding 3, layers 4
         const string collarLayersPath = "..\\..\\..\\kits\\collars\\";
@@ -57,7 +56,6 @@ namespace KitGenerator
             brandDataGridView.Rows.Add();
             brandDataGridView[0, 0].Value = brandWelcome;
 
-            designIsSelected = false;
             designDataGridView.Rows.Clear();
             designDataGridView.Rows.Add();
             designDataGridView[0, 0].Value = designWelcome;
@@ -71,18 +69,16 @@ namespace KitGenerator
         {
             List<KitLayer> kitLayers = new List<KitLayer>();
             
-            if (designIsSelected)
+            for (int ii = 0; ii < designDataGridView.RowCount - 1; ii++)
             {
-                foreach (DataGridViewRow designRow in designDataGridView.Rows)
-                {
-                    KitLayer designLayer = new KitLayer(
-                        designRow.Cells[0].Value.ToString(),
-                        designLayersPath + designRow.Cells[0].Value + ".png",
-                        new List<Color>(new Color[] { designRow.Cells[1].Style.BackColor, designRow.Cells[2].Style.BackColor, designRow.Cells[3].Style.BackColor }),
-                        0,
-                        new Rectangle());
-                    kitLayers.Add(designLayer);
-                }
+                DataGridViewRow designRow = designDataGridView.Rows[ii];
+                KitLayer designLayer = new KitLayer(
+                    designRow.Cells[0].Value.ToString(),
+                    designLayersPath + designRow.Cells[0].Value + ".png",
+                    new List<Color>(new Color[] { designRow.Cells[1].Style.BackColor, designRow.Cells[2].Style.BackColor, designRow.Cells[3].Style.BackColor }),
+                    0,
+                    new Rectangle());
+                kitLayers.Add(designLayer);
             }
             
             if (brandIsSelected)
@@ -371,7 +367,6 @@ namespace KitGenerator
                     row.Cells[1].Style.BackColor = colorButton1.BackColor;
                     row.Cells[2].Style.BackColor = colorButton2.BackColor;
                     row.Cells[3].Style.BackColor = colorButton3.BackColor;
-                    designIsSelected = true;
                     if (layerEdited >= 0)
                     {
                         designDataGridView.Rows.RemoveAt(layerEdited);
@@ -472,13 +467,11 @@ namespace KitGenerator
             }
         }
 
-        private void designDataGridView_UserDeletedRow(object sender, DataGridViewRowEventArgs e)
+        private void designDataGridView_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
         {
-            if (designDataGridView.RowCount == 0)
+            if (e.Row.Index == designDataGridView.RowCount - 1)
             {
-                designIsSelected = false;
-                designDataGridView.Rows.Add();
-                designDataGridView[0, 0].Value = designWelcome;
+                e.Cancel = true;
             }
         }
     }

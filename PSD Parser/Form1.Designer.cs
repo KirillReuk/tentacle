@@ -124,6 +124,7 @@
             this.color2,
             this.color3});
             this.designDataGridView.Location = new System.Drawing.Point(11, 279);
+            this.designDataGridView.MultiSelect = false;
             this.designDataGridView.Name = "designDataGridView";
             this.designDataGridView.RowHeadersVisible = false;
             this.designDataGridView.RowTemplate.Height = 24;
@@ -132,7 +133,7 @@
             this.designDataGridView.TabIndex = 31;
             this.designDataGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.designDataGridView_CellDoubleClick);
             this.designDataGridView.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.designDataGridView_RowsRemoved);
-            this.designDataGridView.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.designDataGridView_UserDeletedRow);
+            this.designDataGridView.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this.designDataGridView_UserDeletingRow);
             // 
             // names
             // 
