@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.runButton = new System.Windows.Forms.Button();
             this.colorDialog = new System.Windows.Forms.ColorDialog();
@@ -53,15 +53,16 @@
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label4 = new System.Windows.Forms.Label();
             this.layerTab = new System.Windows.Forms.TabPage();
+            this.layerDataGridView = new System.Windows.Forms.DataGridView();
+            this.Column1 = new System.Windows.Forms.DataGridViewImageColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewImageColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewImageColumn();
+            this.layerTabControl = new System.Windows.Forms.TabControl();
             this.layersDoneButton = new System.Windows.Forms.Button();
             this.colorButton1 = new System.Windows.Forms.Button();
             this.colorButton2 = new System.Windows.Forms.Button();
             this.colorButton3 = new System.Windows.Forms.Button();
             this.layersBackButton = new System.Windows.Forms.Button();
-            this.layerDataGridView = new System.Windows.Forms.DataGridView();
-            this.Column1 = new System.Windows.Forms.DataGridViewImageColumn();
-            this.Column2 = new System.Windows.Forms.DataGridViewImageColumn();
-            this.Column3 = new System.Windows.Forms.DataGridViewImageColumn();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -69,7 +70,6 @@
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.layerTabControl = new System.Windows.Forms.TabControl();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.designDataGridView)).BeginInit();
             this.mainTabControl.SuspendLayout();
@@ -109,6 +109,7 @@
             this.designDataGridView.AllowUserToResizeColumns = false;
             this.designDataGridView.AllowUserToResizeRows = false;
             this.designDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.designDataGridView.BackgroundColor = System.Drawing.Color.White;
             this.designDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.designDataGridView.ColumnHeadersVisible = false;
             this.designDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
@@ -116,13 +117,13 @@
             this.color1,
             this.color2,
             this.color3});
-            this.designDataGridView.Location = new System.Drawing.Point(11, 279);
+            this.designDataGridView.Location = new System.Drawing.Point(11, 237);
             this.designDataGridView.MultiSelect = false;
             this.designDataGridView.Name = "designDataGridView";
             this.designDataGridView.RowHeadersVisible = false;
             this.designDataGridView.RowTemplate.Height = 24;
             this.designDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.designDataGridView.Size = new System.Drawing.Size(287, 255);
+            this.designDataGridView.Size = new System.Drawing.Size(287, 297);
             this.designDataGridView.TabIndex = 31;
             this.designDataGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.designDataGridView_CellDoubleClick);
             this.designDataGridView.RowsRemoved += new System.Windows.Forms.DataGridViewRowsRemovedEventHandler(this.designDataGridView_RowsRemoved);
@@ -217,7 +218,7 @@
             // layersLabel
             // 
             this.layersLabel.AutoSize = true;
-            this.layersLabel.Location = new System.Drawing.Point(8, 259);
+            this.layersLabel.Location = new System.Drawing.Point(8, 217);
             this.layersLabel.Name = "layersLabel";
             this.layersLabel.Size = new System.Drawing.Size(51, 17);
             this.layersLabel.TabIndex = 57;
@@ -245,9 +246,9 @@
             this.collarDataGridView.Location = new System.Drawing.Point(11, 167);
             this.collarDataGridView.Name = "collarDataGridView";
             this.collarDataGridView.RowHeadersVisible = false;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.Black;
-            this.collarDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.Black;
+            this.collarDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle5;
             this.collarDataGridView.RowTemplate.Height = 24;
             this.collarDataGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.collarDataGridView.Size = new System.Drawing.Size(287, 24);
@@ -296,9 +297,9 @@
             this.manDataGridView.Location = new System.Drawing.Point(11, 120);
             this.manDataGridView.Name = "manDataGridView";
             this.manDataGridView.RowHeadersVisible = false;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.Black;
-            this.manDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.Black;
+            this.manDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle6;
             this.manDataGridView.RowTemplate.Height = 24;
             this.manDataGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.manDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -339,6 +340,62 @@
             this.layerTab.TabIndex = 1;
             this.layerTab.Text = "tabPage2";
             this.layerTab.UseVisualStyleBackColor = true;
+            // 
+            // layerDataGridView
+            // 
+            this.layerDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.layerDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.layerDataGridView.ColumnHeadersVisible = false;
+            this.layerDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column1,
+            this.Column2,
+            this.Column3});
+            this.layerDataGridView.Location = new System.Drawing.Point(6, 27);
+            this.layerDataGridView.Margin = new System.Windows.Forms.Padding(0);
+            this.layerDataGridView.MultiSelect = false;
+            this.layerDataGridView.Name = "layerDataGridView";
+            this.layerDataGridView.RowHeadersVisible = false;
+            this.layerDataGridView.RowTemplate.Height = 103;
+            this.layerDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
+            this.layerDataGridView.Size = new System.Drawing.Size(299, 497);
+            this.layerDataGridView.TabIndex = 34;
+            this.layerDataGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.layerDataGridView_CellDoubleClick);
+            this.layerDataGridView.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.layerDataGridView_CellMouseEnter);
+            this.layerDataGridView.MouseLeave += new System.EventHandler(this.layerDataGridView_MouseLeave);
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "Column1";
+            this.Column1.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom;
+            this.Column1.Name = "Column1";
+            this.Column1.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Column1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "Column2";
+            this.Column2.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom;
+            this.Column2.Name = "Column2";
+            this.Column2.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // Column3
+            // 
+            this.Column3.HeaderText = "Column3";
+            this.Column3.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom;
+            this.Column3.Name = "Column3";
+            this.Column3.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Column3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // layerTabControl
+            // 
+            this.layerTabControl.Dock = System.Windows.Forms.DockStyle.Top;
+            this.layerTabControl.Location = new System.Drawing.Point(3, 3);
+            this.layerTabControl.Name = "layerTabControl";
+            this.layerTabControl.SelectedIndex = 0;
+            this.layerTabControl.Size = new System.Drawing.Size(309, 21);
+            this.layerTabControl.TabIndex = 49;
+            this.layerTabControl.SelectedIndexChanged += new System.EventHandler(this.layerTabControl_SelectedIndexChanged);
             // 
             // layersDoneButton
             // 
@@ -394,51 +451,6 @@
             this.layersBackButton.UseVisualStyleBackColor = true;
             this.layersBackButton.Click += new System.EventHandler(this.layersBackButton_Click);
             // 
-            // layerDataGridView
-            // 
-            this.layerDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.layerDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.layerDataGridView.ColumnHeadersVisible = false;
-            this.layerDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
-            this.Column2,
-            this.Column3});
-            this.layerDataGridView.Location = new System.Drawing.Point(6, 27);
-            this.layerDataGridView.Margin = new System.Windows.Forms.Padding(0);
-            this.layerDataGridView.Name = "layerDataGridView";
-            this.layerDataGridView.RowHeadersVisible = false;
-            this.layerDataGridView.RowTemplate.Height = 103;
-            this.layerDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.layerDataGridView.Size = new System.Drawing.Size(299, 497);
-            this.layerDataGridView.TabIndex = 34;
-            this.layerDataGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.layerDataGridView_CellDoubleClick);
-            this.layerDataGridView.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.layerDataGridView_CellMouseEnter);
-            this.layerDataGridView.MouseLeave += new System.EventHandler(this.layerDataGridView_MouseLeave);
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "Column1";
-            this.Column1.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom;
-            this.Column1.Name = "Column1";
-            this.Column1.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Column1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "Column2";
-            this.Column2.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom;
-            this.Column2.Name = "Column2";
-            this.Column2.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Column2.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
-            // Column3
-            // 
-            this.Column3.HeaderText = "Column3";
-            this.Column3.ImageLayout = System.Windows.Forms.DataGridViewImageCellLayout.Zoom;
-            this.Column3.Name = "Column3";
-            this.Column3.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Column3.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
             // menuStrip
             // 
             this.menuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
@@ -488,16 +500,6 @@
             this.exitToolStripMenuItem.Size = new System.Drawing.Size(144, 26);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
-            // 
-            // layerTabControl
-            // 
-            this.layerTabControl.Dock = System.Windows.Forms.DockStyle.Top;
-            this.layerTabControl.Location = new System.Drawing.Point(3, 3);
-            this.layerTabControl.Name = "layerTabControl";
-            this.layerTabControl.SelectedIndex = 0;
-            this.layerTabControl.Size = new System.Drawing.Size(309, 21);
-            this.layerTabControl.TabIndex = 49;
-            this.layerTabControl.SelectedIndexChanged += new System.EventHandler(this.layerTabControl_SelectedIndexChanged);
             // 
             // Form1
             // 

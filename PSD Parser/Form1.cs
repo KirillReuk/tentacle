@@ -38,7 +38,7 @@ namespace KitGenerator
             Initialization();
         }
 
-        private void Initialization()
+        private void Initialization() //wipe the interface
         {
             manDataGridView.Rows.Clear();
             manDataGridView.Rows.Add();
@@ -58,7 +58,7 @@ namespace KitGenerator
             RefreshImage();
         }
 
-        private void RefreshImage()
+        private void RefreshImage()//pull all the data around, refresh the main image with it
         {
             List<KitLayer> kitLayers = new List<KitLayer>();
             
@@ -67,7 +67,7 @@ namespace KitGenerator
                 DataGridViewRow designRow = designDataGridView.Rows[ii];
                 KitLayer designLayer = new KitLayer(
                     designRow.Cells[0].Value.ToString(),
-                    designLayersPath + layerTabControl.SelectedTab.Text + "\\" + designRow.Cells[0].Value + ".png",
+                    designLayersPath + "\\" + designRow.Cells[0].Value + ".png",
                     new List<Color>(new Color[] { designRow.Cells[1].Style.BackColor, designRow.Cells[2].Style.BackColor, designRow.Cells[3].Style.BackColor }),
                     0,
                     new Rectangle());
@@ -102,7 +102,7 @@ namespace KitGenerator
             if (colorDialog.ShowDialog() == DialogResult.OK)
             {
                 colorButton1.BackColor = colorDialog.Color;
-                repaintLayers();
+                repaintLayerGrid();
                 previewWithLayer(getSelectedLayer());
             }   
         }
@@ -112,7 +112,7 @@ namespace KitGenerator
             if (colorDialog.ShowDialog() == DialogResult.OK)
             {
                 colorButton2.BackColor = colorDialog.Color;
-                repaintLayers();
+                repaintLayerGrid();
                 previewWithLayer(getSelectedLayer());
             }
         }
@@ -122,7 +122,7 @@ namespace KitGenerator
             if (colorDialog.ShowDialog() == DialogResult.OK)
             {
                 colorButton3.BackColor = colorDialog.Color;
-                repaintLayers();
+                repaintLayerGrid();
                 previewWithLayer(getSelectedLayer());
             }
         }
@@ -155,12 +155,12 @@ namespace KitGenerator
         private void collarDataGridView_Click(object sender, EventArgs e)
         {
             RefreshImage();
-            showLayers(collarLayersPath, collarDataGridView[0, 0].Value.ToString(), new List<Color>(new Color[] { collarDataGridView[1, 0].Style.BackColor, collarDataGridView[2, 0].Style.BackColor , collarDataGridView[3, 0].Style.BackColor}));
+            loadLayerTab(collarLayersPath, collarDataGridView[0, 0].Value.ToString(), new List<Color>(new Color[] { collarDataGridView[1, 0].Style.BackColor, collarDataGridView[2, 0].Style.BackColor , collarDataGridView[3, 0].Style.BackColor}));
             currentItemIndex = 2;
             mainTabControl.SelectTab(1);
         }
 
-        private void refreshLayerTab(string path)
+        private void refreshLayerGrid(string path)//refresh layer selection grid with the pictures from the new path
         {
             layerDataGridView.Rows.Clear();
 
@@ -183,22 +183,24 @@ namespace KitGenerator
                     Bitmap img1 = new Bitmap(new Bitmap(layerFiles[ii + jj]), layerDataGridView[0, 0].Size);
                     layerDataGridView[jj, ii / 3].Value = img1;
                     layerDataGridView[jj, ii / 3].Tag = Path.GetFileNameWithoutExtension(layerFiles[ii + jj]);
-
-                    //if (layerDataGridView[jj, ii / 3].Tag.ToString().EndsWith(selectedElement))
-                    //    layerDataGridView[jj, ii / 3].Selected = true;
                 }
             }
             
-            repaintLayers();
+            repaintLayerGrid();
             oldPreview = new Bitmap(pictureBox.Image);
         }
 
-        private void showLayers(string path, string selectedElement, List<Color> colors) //from which folder to show, what to put selection on, colors used
+        private void loadLayerTab(string path, string selectedElement, List<Color> colors) //load the layer selection tab
         {
             layerTabControl.TabPages.Clear();
 
             currentPath = path;
             List<string> directories = new List<string>(Directory.GetDirectories(path).Select(x => Path.GetFileName(x)));
+            if (directories.Count == 0)
+            {
+                directories.Add(Path.GetFileName(path));
+            }
+
             foreach (string directory in directories)
             {
                 layerTabControl.TabPages.Add(directory);
@@ -228,7 +230,7 @@ namespace KitGenerator
                 colorButton3.BackColor = colors[2];
             }
 
-            refreshLayerTab(path + layerTabControl.SelectedTab.Text);
+            refreshLayerGrid(path + layerTabControl.SelectedTab.Text);
         }
         
         private void layersDoneButton_Click(object sender, EventArgs e)
@@ -284,12 +286,12 @@ namespace KitGenerator
             return image1;
         }
         
-        private void previewWithLayer(Bitmap newLayer)
+        private void previewWithLayer(Bitmap newLayer) //preview with newLayer on top
         {
             pictureBox.Image = MatrixBlend(oldPreview, newLayer);
         }
 
-        private Bitmap getSelectedLayer()
+        private Bitmap getSelectedLayer()// returns the layer selected from the grid, colorized
         {
             if ((layerDataGridView.SelectedCells.Count == 0)||(layerDataGridView.SelectedCells[0].Tag == null))
                 return null;
@@ -326,7 +328,7 @@ namespace KitGenerator
             acceptLayer();
         }
 
-        private void acceptLayer()
+        private void acceptLayer() //applies the layer, returns to the main tab
         {
             string currentTag = layerDataGridView.SelectedCells[0].Tag.ToString();
             if (Path.GetFileNameWithoutExtension(blankImagePath) == (currentTag))
@@ -348,7 +350,7 @@ namespace KitGenerator
                 case 4:
                     DataGridViewRow row = new DataGridViewRow();
                     row.CreateCells(designDataGridView);
-                    row.Cells[0].Value = currentTag;
+                    row.Cells[0].Value = layerTabControl.SelectedTab.Text + "\\" + currentTag;
                     row.Cells[1].Style.BackColor = colorButton1.BackColor;
                     row.Cells[2].Style.BackColor = colorButton2.BackColor;
                     row.Cells[3].Style.BackColor = colorButton3.BackColor;
@@ -365,7 +367,7 @@ namespace KitGenerator
             mainTabControl.SelectTab(0);
         }
 
-        private void repaintLayers()
+        private void repaintLayerGrid() //repaints the layer grid with the colors selected
         {
             foreach (DataGridViewRow row in layerDataGridView.Rows)
             {
@@ -383,7 +385,7 @@ namespace KitGenerator
         {
             manufacturer = "";
             RefreshImage();
-            showLayers(manLayersPath, manDataGridView[0, 0].Value.ToString(), new List<Color>());
+            loadLayerTab(manLayersPath, manDataGridView[0, 0].Value.ToString(), new List<Color>());
             currentItemIndex = 1;
             mainTabControl.SelectTab(1);
         }
@@ -392,12 +394,12 @@ namespace KitGenerator
         {
             if (designDataGridView.Rows.Count == e.RowIndex + 1)
             {
-                showLayers(designLayersPath, "", defaultColorPalette);
+                loadLayerTab(designLayersPath, "", defaultColorPalette);
                 layerEdited = -1;
             }
             else
             {
-                showLayers(designLayersPath, designDataGridView[e.ColumnIndex, e.RowIndex].Value.ToString(), new List<Color>(new Color[] { designDataGridView[1, 0].Style.BackColor, designDataGridView[2, 0].Style.BackColor, designDataGridView[3, 0].Style.BackColor }));
+                loadLayerTab(designLayersPath, designDataGridView[e.ColumnIndex, e.RowIndex].Value.ToString(), new List<Color>(new Color[] { designDataGridView[1, 0].Style.BackColor, designDataGridView[2, 0].Style.BackColor, designDataGridView[3, 0].Style.BackColor }));
                 layerEdited = e.RowIndex;
             }
 
@@ -453,7 +455,14 @@ namespace KitGenerator
 
         private void layerTabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
-            refreshLayerTab(currentPath + "\\" + layerTabControl.SelectedTab.Name);
+            try
+            {
+                refreshLayerGrid(currentPath + layerTabControl.SelectedTab.Text);
+            }
+            catch (NullReferenceException)
+            {
+
+            };
         }
     }
 }
