@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
@@ -250,45 +248,9 @@ namespace KitGenerator
             mainTabControl.SelectTab(0);
         }
         
-        private static Bitmap MatrixBlend(Bitmap _image1, Bitmap image2, byte alpha = 255)
-        {
-            Bitmap image1 = new Bitmap(_image1);
-
-            if ((_image1 == null)|| (image2 == null))
-                return image1;
-            
-            float alphaNorm = (float)alpha / 255.0F;
-            
-            ColorMatrix matrix = new ColorMatrix(new float[][]{
-                new float[] {1F, 0, 0, 0, 0},
-                new float[] {0, 1F, 0, 0, 0},
-                new float[] {0, 0, 1F, 0, 0},
-                new float[] {0, 0, 0, alphaNorm, 0},
-                new float[] {0, 0, 0, 0, 1F}});
-
-            ImageAttributes imageAttributes = new ImageAttributes();
-            imageAttributes.SetColorMatrix(matrix);
-
-            using (Graphics g = Graphics.FromImage(image1))
-            {
-                g.CompositingMode = CompositingMode.SourceOver;
-                g.CompositingQuality = CompositingQuality.HighQuality;
-
-                g.DrawImage(image2,
-                    new Rectangle(0, 0, image1.Width, image1.Height),
-                    0,
-                    0,
-                    image2.Width,
-                    image2.Height,
-                    GraphicsUnit.Pixel,
-                    imageAttributes);
-            }
-            return image1;
-        }
-        
         private void previewWithLayer(Bitmap newLayer) //preview with newLayer on top
         {
-            pictureBox.Image = MatrixBlend(oldPreview, newLayer);
+            pictureBox.Image = Coloring.MatrixBlend(oldPreview, newLayer);
         }
 
         private Bitmap getSelectedLayer()// returns the layer selected from the grid, colorized
