@@ -18,7 +18,7 @@ namespace KitGenerator
         const string manLayersPath = "..\\..\\..\\kits\\manufacturers\\";
         const string designLayersPath = "..\\..\\..\\kits\\layers\\";
         const string blankImagePath = "..\\..\\..\\kits\\_blank.png";
-        List<Color> defaultColorPalette = new List<Color>(new Color[] { Color.White, Color.Blue, Color.Red });
+        readonly List<Color> defaultLayerColorPalette = new List<Color>(new Color[] { Color.White, Color.Blue, Color.Red });
 
         const string collarWelcome = "Select collar...";
         const string manWelcome = "Select manufacturer...";
@@ -27,6 +27,7 @@ namespace KitGenerator
         Bitmap oldPreview;
         int layerEdited = -1;
         string currentPath = "";
+        List<Color> oldColors;
 
         string currentFilePath = "";
 
@@ -100,7 +101,6 @@ namespace KitGenerator
             if (colorDialog.ShowDialog() == DialogResult.OK)
             {
                 colorButton1.BackColor = colorDialog.Color;
-                repaintLayerGrid();
                 previewWithLayer(getSelectedLayer());
             }   
         }
@@ -110,7 +110,6 @@ namespace KitGenerator
             if (colorDialog.ShowDialog() == DialogResult.OK)
             {
                 colorButton2.BackColor = colorDialog.Color;
-                repaintLayerGrid();
                 previewWithLayer(getSelectedLayer());
             }
         }
@@ -120,7 +119,6 @@ namespace KitGenerator
             if (colorDialog.ShowDialog() == DialogResult.OK)
             {
                 colorButton3.BackColor = colorDialog.Color;
-                repaintLayerGrid();
                 previewWithLayer(getSelectedLayer());
             }
         }
@@ -153,7 +151,8 @@ namespace KitGenerator
         private void collarDataGridView_Click(object sender, EventArgs e)
         {
             RefreshImage();
-            loadLayerTab(collarLayersPath, collarDataGridView[0, 0].Value.ToString(), new List<Color>(new Color[] { collarDataGridView[1, 0].Style.BackColor, collarDataGridView[2, 0].Style.BackColor , collarDataGridView[3, 0].Style.BackColor}));
+            loadLayerTab(collarLayersPath, collarDataGridView[0, 0].Value.ToString());
+            oldColors = new List<Color>(new Color[] { collarDataGridView[1, 0].Style.BackColor, collarDataGridView[2, 0].Style.BackColor, collarDataGridView[3, 0].Style.BackColor });
             currentItemIndex = 2;
             mainTabControl.SelectTab(1);
         }
@@ -188,7 +187,7 @@ namespace KitGenerator
             oldPreview = new Bitmap(pictureBox.Image);
         }
 
-        private void loadLayerTab(string path, string selectedElement, List<Color> colors) //load the layer selection tab
+        private void loadLayerTab(string path, string selectedElement) //load the layer selection tab
         {
             layerTabControl.TabPages.Clear();
 
@@ -206,34 +205,14 @@ namespace KitGenerator
 
             layerTabControl.SelectTab(0);
 
-            if (colors.Count == 0)
-                colorButton1.Visible = false;
-            else
-            {
-                colorButton1.Visible = true;
-                colorButton1.BackColor = colors[0];
-            }
-            if (colors.Count < 2)
-                colorButton2.Visible = false;
-            else
-            {
-                colorButton2.Visible = true;
-                colorButton2.BackColor = colors[1];
-            }
-            if (colors.Count < 3)
-                colorButton3.Visible = false;
-            else
-            {
-                colorButton3.Visible = true;
-                colorButton3.BackColor = colors[2];
-            }
+            
 
             refreshLayerGrid(path + layerTabControl.SelectedTab.Text);
         }
         
         private void layersDoneButton_Click(object sender, EventArgs e)
         {
-            acceptLayer();
+            mainTabControl.SelectTab(2);
         }
 
         private void layerDataGridView_MouseLeave(object sender, EventArgs e)
@@ -347,7 +326,8 @@ namespace KitGenerator
         {
             manufacturer = "";
             RefreshImage();
-            loadLayerTab(manLayersPath, manDataGridView[0, 0].Value.ToString(), new List<Color>());
+            loadLayerTab(manLayersPath, manDataGridView[0, 0].Value.ToString());
+            oldColors = new List<Color>();
             currentItemIndex = 1;
             mainTabControl.SelectTab(1);
         }
@@ -356,12 +336,14 @@ namespace KitGenerator
         {
             if (designDataGridView.Rows.Count == e.RowIndex + 1)
             {
-                loadLayerTab(designLayersPath, "", defaultColorPalette);
+                loadLayerTab(designLayersPath, "");
+                oldColors = defaultLayerColorPalette;
                 layerEdited = -1;
             }
             else
             {
-                loadLayerTab(designLayersPath, designDataGridView[e.ColumnIndex, e.RowIndex].Value.ToString(), new List<Color>(new Color[] { designDataGridView[1, 0].Style.BackColor, designDataGridView[2, 0].Style.BackColor, designDataGridView[3, 0].Style.BackColor }));
+                loadLayerTab(designLayersPath, designDataGridView[e.ColumnIndex, e.RowIndex].Value.ToString());
+                oldColors = new List<Color>(new Color[] { designDataGridView[1, 0].Style.BackColor, designDataGridView[2, 0].Style.BackColor, designDataGridView[3, 0].Style.BackColor });
                 layerEdited = e.RowIndex;
             }
 
@@ -425,6 +407,16 @@ namespace KitGenerator
             {
 
             };
+        }
+
+        private void customizationBackButton_Click(object sender, EventArgs e)
+        {
+            mainTabControl.SelectTab(1);
+        }
+
+        private void customizationFinishButton_Click(object sender, EventArgs e)
+        {
+            acceptLayer();
         }
     }
 }

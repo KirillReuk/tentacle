@@ -58,11 +58,14 @@
             this.Column2 = new System.Windows.Forms.DataGridViewImageColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewImageColumn();
             this.layerTabControl = new System.Windows.Forms.TabControl();
-            this.layersDoneButton = new System.Windows.Forms.Button();
+            this.layersNextButton = new System.Windows.Forms.Button();
+            this.layersBackButton = new System.Windows.Forms.Button();
+            this.customizationTab = new System.Windows.Forms.TabPage();
+            this.customizationFinishButton = new System.Windows.Forms.Button();
+            this.customizationBackButton = new System.Windows.Forms.Button();
             this.colorButton1 = new System.Windows.Forms.Button();
             this.colorButton2 = new System.Windows.Forms.Button();
             this.colorButton3 = new System.Windows.Forms.Button();
-            this.layersBackButton = new System.Windows.Forms.Button();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -78,6 +81,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.manDataGridView)).BeginInit();
             this.layerTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layerDataGridView)).BeginInit();
+            this.customizationTab.SuspendLayout();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -165,6 +169,7 @@
             // 
             this.mainTabControl.Controls.Add(this.mainTab);
             this.mainTabControl.Controls.Add(this.layerTab);
+            this.mainTabControl.Controls.Add(this.customizationTab);
             this.mainTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.mainTabControl.ItemSize = new System.Drawing.Size(0, 1);
             this.mainTabControl.Location = new System.Drawing.Point(0, 28);
@@ -328,10 +333,7 @@
             // 
             this.layerTab.Controls.Add(this.layerDataGridView);
             this.layerTab.Controls.Add(this.layerTabControl);
-            this.layerTab.Controls.Add(this.layersDoneButton);
-            this.layerTab.Controls.Add(this.colorButton1);
-            this.layerTab.Controls.Add(this.colorButton2);
-            this.layerTab.Controls.Add(this.colorButton3);
+            this.layerTab.Controls.Add(this.layersNextButton);
             this.layerTab.Controls.Add(this.layersBackButton);
             this.layerTab.Location = new System.Drawing.Point(4, 5);
             this.layerTab.Name = "layerTab";
@@ -357,7 +359,7 @@
             this.layerDataGridView.RowHeadersVisible = false;
             this.layerDataGridView.RowTemplate.Height = 103;
             this.layerDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.layerDataGridView.Size = new System.Drawing.Size(299, 497);
+            this.layerDataGridView.Size = new System.Drawing.Size(299, 534);
             this.layerDataGridView.TabIndex = 34;
             this.layerDataGridView.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.layerDataGridView_CellDoubleClick);
             this.layerDataGridView.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.layerDataGridView_CellMouseEnter);
@@ -397,49 +399,15 @@
             this.layerTabControl.TabIndex = 49;
             this.layerTabControl.SelectedIndexChanged += new System.EventHandler(this.layerTabControl_SelectedIndexChanged);
             // 
-            // layersDoneButton
+            // layersNextButton
             // 
-            this.layersDoneButton.Location = new System.Drawing.Point(183, 564);
-            this.layersDoneButton.Name = "layersDoneButton";
-            this.layersDoneButton.Size = new System.Drawing.Size(123, 30);
-            this.layersDoneButton.TabIndex = 48;
-            this.layersDoneButton.Text = "Done";
-            this.layersDoneButton.UseVisualStyleBackColor = true;
-            this.layersDoneButton.Click += new System.EventHandler(this.layersDoneButton_Click);
-            // 
-            // colorButton1
-            // 
-            this.colorButton1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.colorButton1.BackColor = System.Drawing.Color.Maroon;
-            this.colorButton1.Location = new System.Drawing.Point(-62, 537);
-            this.colorButton1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.colorButton1.Name = "colorButton1";
-            this.colorButton1.Size = new System.Drawing.Size(245, 27);
-            this.colorButton1.TabIndex = 45;
-            this.colorButton1.UseVisualStyleBackColor = false;
-            this.colorButton1.Click += new System.EventHandler(this.colorButton1_Click);
-            // 
-            // colorButton2
-            // 
-            this.colorButton2.BackColor = System.Drawing.Color.Cyan;
-            this.colorButton2.Location = new System.Drawing.Point(183, 537);
-            this.colorButton2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.colorButton2.Name = "colorButton2";
-            this.colorButton2.Size = new System.Drawing.Size(65, 27);
-            this.colorButton2.TabIndex = 46;
-            this.colorButton2.UseVisualStyleBackColor = false;
-            this.colorButton2.Click += new System.EventHandler(this.colorButton2_Click);
-            // 
-            // colorButton3
-            // 
-            this.colorButton3.BackColor = System.Drawing.Color.Yellow;
-            this.colorButton3.Location = new System.Drawing.Point(248, 537);
-            this.colorButton3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.colorButton3.Name = "colorButton3";
-            this.colorButton3.Size = new System.Drawing.Size(65, 27);
-            this.colorButton3.TabIndex = 47;
-            this.colorButton3.UseVisualStyleBackColor = false;
-            this.colorButton3.Click += new System.EventHandler(this.colorButton3_Click);
+            this.layersNextButton.Location = new System.Drawing.Point(183, 564);
+            this.layersNextButton.Name = "layersNextButton";
+            this.layersNextButton.Size = new System.Drawing.Size(123, 33);
+            this.layersNextButton.TabIndex = 48;
+            this.layersNextButton.Text = "Next";
+            this.layersNextButton.UseVisualStyleBackColor = true;
+            this.layersNextButton.Click += new System.EventHandler(this.layersDoneButton_Click);
             // 
             // layersBackButton
             // 
@@ -450,6 +418,74 @@
             this.layersBackButton.Text = "Back";
             this.layersBackButton.UseVisualStyleBackColor = true;
             this.layersBackButton.Click += new System.EventHandler(this.layersBackButton_Click);
+            // 
+            // customizationTab
+            // 
+            this.customizationTab.Controls.Add(this.customizationFinishButton);
+            this.customizationTab.Controls.Add(this.customizationBackButton);
+            this.customizationTab.Controls.Add(this.colorButton1);
+            this.customizationTab.Controls.Add(this.colorButton2);
+            this.customizationTab.Controls.Add(this.colorButton3);
+            this.customizationTab.Location = new System.Drawing.Point(4, 5);
+            this.customizationTab.Name = "customizationTab";
+            this.customizationTab.Size = new System.Drawing.Size(315, 606);
+            this.customizationTab.TabIndex = 2;
+            this.customizationTab.Text = "settings";
+            this.customizationTab.UseVisualStyleBackColor = true;
+            // 
+            // customizationFinishButton
+            // 
+            this.customizationFinishButton.Location = new System.Drawing.Point(183, 565);
+            this.customizationFinishButton.Name = "customizationFinishButton";
+            this.customizationFinishButton.Size = new System.Drawing.Size(123, 33);
+            this.customizationFinishButton.TabIndex = 52;
+            this.customizationFinishButton.Text = "Next";
+            this.customizationFinishButton.UseVisualStyleBackColor = true;
+            this.customizationFinishButton.Click += new System.EventHandler(this.customizationFinishButton_Click);
+            // 
+            // customizationBackButton
+            // 
+            this.customizationBackButton.Location = new System.Drawing.Point(3, 565);
+            this.customizationBackButton.Name = "customizationBackButton";
+            this.customizationBackButton.Size = new System.Drawing.Size(174, 33);
+            this.customizationBackButton.TabIndex = 51;
+            this.customizationBackButton.Text = "Back";
+            this.customizationBackButton.UseVisualStyleBackColor = true;
+            this.customizationBackButton.Click += new System.EventHandler(this.customizationBackButton_Click);
+            // 
+            // colorButton1
+            // 
+            this.colorButton1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.colorButton1.BackColor = System.Drawing.Color.Maroon;
+            this.colorButton1.Location = new System.Drawing.Point(33, 31);
+            this.colorButton1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.colorButton1.Name = "colorButton1";
+            this.colorButton1.Size = new System.Drawing.Size(105, 27);
+            this.colorButton1.TabIndex = 48;
+            this.colorButton1.UseVisualStyleBackColor = false;
+            this.colorButton1.Click += new System.EventHandler(this.colorButton1_Click);
+            // 
+            // colorButton2
+            // 
+            this.colorButton2.BackColor = System.Drawing.Color.Cyan;
+            this.colorButton2.Location = new System.Drawing.Point(33, 62);
+            this.colorButton2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.colorButton2.Name = "colorButton2";
+            this.colorButton2.Size = new System.Drawing.Size(105, 27);
+            this.colorButton2.TabIndex = 49;
+            this.colorButton2.UseVisualStyleBackColor = false;
+            this.colorButton2.Click += new System.EventHandler(this.colorButton2_Click);
+            // 
+            // colorButton3
+            // 
+            this.colorButton3.BackColor = System.Drawing.Color.Yellow;
+            this.colorButton3.Location = new System.Drawing.Point(33, 93);
+            this.colorButton3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.colorButton3.Name = "colorButton3";
+            this.colorButton3.Size = new System.Drawing.Size(105, 27);
+            this.colorButton3.TabIndex = 50;
+            this.colorButton3.UseVisualStyleBackColor = false;
+            this.colorButton3.Click += new System.EventHandler(this.colorButton3_Click);
             // 
             // menuStrip
             // 
@@ -522,6 +558,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.manDataGridView)).EndInit();
             this.layerTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layerDataGridView)).EndInit();
+            this.customizationTab.ResumeLayout(false);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
             this.ResumeLayout(false);
@@ -555,10 +592,7 @@
         private System.Windows.Forms.DataGridViewImageColumn Column3;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView collarDataGridView;
-        private System.Windows.Forms.Button colorButton1;
-        private System.Windows.Forms.Button colorButton2;
-        private System.Windows.Forms.Button colorButton3;
-        private System.Windows.Forms.Button layersDoneButton;
+        private System.Windows.Forms.Button layersNextButton;
         private System.Windows.Forms.Label layersLabel;
         private System.Windows.Forms.Button mainColorButton;
         private System.Windows.Forms.Label label2;
@@ -571,6 +605,12 @@
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
         private System.Windows.Forms.TabControl layerTabControl;
+        private System.Windows.Forms.TabPage customizationTab;
+        private System.Windows.Forms.Button colorButton1;
+        private System.Windows.Forms.Button colorButton2;
+        private System.Windows.Forms.Button colorButton3;
+        private System.Windows.Forms.Button customizationFinishButton;
+        private System.Windows.Forms.Button customizationBackButton;
     }
 }
 
