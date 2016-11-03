@@ -58,13 +58,11 @@ namespace KitGenerator
         public Image GetKit()
         {
             MagickImageCollection collection = new MagickImageCollection(bottomImagePath);
-
-            Rectangle offsetRect = new PsdFile(bottomImagePath, Encoding.ASCII).Layers[0].Rect;
             
-            MagickImage frame = collection[0].paintMagickImage(mainColor);
-            frame.Page = new MagickGeometry(offsetRect.X, offsetRect.Y, 0, 0);
-            collection.Add(frame);
-
+            Rectangle offsetRect = new PsdFile(bottomImagePath, Encoding.ASCII).Layers[2].Rect;
+            collection[3] = new MagickImage(collection[3].paintMagickImage(mainColor));
+            collection[3].Page = new MagickGeometry(offsetRect.X, offsetRect.Y, 0, 0);
+            
             foreach (KitLayer kl in kitLayers)
             {
                 Bitmap bm = (Bitmap)Bitmap.FromFile(kl.imageLocation);
@@ -87,7 +85,7 @@ namespace KitGenerator
             result.Composite(topImageCollection[2], offsets[1].Item1, offsets[1].Item2, CompositeOperator.Darken);
             result.Composite(topImageCollection[3], offsets[2].Item1, offsets[2].Item2, CompositeOperator.Multiply);
             result.Composite(topImageCollection[4], offsets[3].Item1, offsets[3].Item2, CompositeOperator.HardLight);
-            result.Composite(topImageCollection[5], offsets[4].Item1, offsets[4].Item2, CompositeOperator.No);
+            result.Composite(topImageCollection[5], offsets[4].Item1, offsets[4].Item2, CompositeOperator.LinearBurn);
             
             return result.ToBitmap();
         }
