@@ -157,7 +157,7 @@ namespace KitGenerator
             mainTabControl.SelectTab(1);
         }
 
-        private void refreshLayerGrid(string path)//refresh layer selection grid with the pictures from the new path
+        private void refreshLayerGrid(string path)//put pictures from the new path on the layer selection grid
         {
             layerDataGridView.Rows.Clear();
 
@@ -227,9 +227,16 @@ namespace KitGenerator
             mainTabControl.SelectTab(0);
         }
         
-        private void previewWithLayer(Bitmap newLayer) //preview with newLayer on top
+        private void previewWithLayer(Bitmap newLayer) //put newLayer on top of the preview
         {
             pictureBox.Image = Coloring.MatrixBlend(oldPreview, newLayer);
+
+            //put frame around 
+            using (Graphics g = Graphics.FromImage(pictureBox.Image))
+            {
+                Pen blackPen = new Pen(Color.Black, 3);
+                g.DrawRectangle(blackPen, Coloring.GetTrimmedCoordinates(newLayer));
+            }
         }
 
         private Bitmap getSelectedLayer()// returns the layer selected from the grid, colorized
