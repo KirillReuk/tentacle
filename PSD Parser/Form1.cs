@@ -6,7 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 
 namespace KitGenerator
-{
+{ 
     public partial class Form1 : Form
     {
         string manufacturer = "";
@@ -18,7 +18,10 @@ namespace KitGenerator
         const string manLayersPath = "..\\..\\..\\kits\\manufacturers\\";
         const string designLayersPath = "..\\..\\..\\kits\\layers\\";
         const string blankImagePath = "..\\..\\..\\kits\\_blank.png";
+
         readonly List<Color> defaultLayerColorPalette = new List<Color>(new Color[] { Color.White, Color.Blue, Color.Red });
+        readonly Color uncheckedButtonColor = Color.White;
+        readonly Color checkedButtonColor = Color.PowderBlue;
 
         const string collarWelcome = "Select collar...";
         const string manWelcome = "Select manufacturer...";
@@ -227,14 +230,14 @@ namespace KitGenerator
             mainTabControl.SelectTab(0);
         }
         
-        private void previewWithLayer(Bitmap newLayer) //put newLayer on top of the preview
+        private void previewWithLayer(Bitmap newLayer) //put newLayer on top of the preview, then add the frame
         {
             pictureBox.Image = Coloring.MatrixBlend(oldPreview, newLayer);
 
             //put frame around 
             using (Graphics g = Graphics.FromImage(pictureBox.Image))
             {
-                Pen blackPen = new Pen(Color.Black, 3);
+                Pen blackPen = new Pen(Color.Black, 2);
                 g.DrawRectangle(blackPen, Coloring.GetTrimmedCoordinates(newLayer));
             }
         }
@@ -424,6 +427,43 @@ namespace KitGenerator
         private void customizationFinishButton_Click(object sender, EventArgs e)
         {
             acceptLayer();
+        }
+
+        void setActiveCustomizationType(string custType)
+        {
+            moveDecalButton.BackColor = uncheckedButtonColor;
+            rotateDecalButton.BackColor = uncheckedButtonColor;
+            scaleDecalButton.BackColor = uncheckedButtonColor;
+
+            switch (custType)
+            {
+                case "move":
+                    moveDecalButton.BackColor = checkedButtonColor;
+                    break;
+                case "rotate":
+                    rotateDecalButton.BackColor = checkedButtonColor;
+                    break;
+                case "scale":
+                    scaleDecalButton.BackColor = checkedButtonColor;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void moveDecalButton_Click(object sender, EventArgs e)
+        {
+            setActiveCustomizationType("move");
+        }
+
+        private void rotateDecalButton_Click(object sender, EventArgs e)
+        {
+            setActiveCustomizationType("rotate");
+        }
+
+        private void scaleDecalButton_Click(object sender, EventArgs e)
+        {
+            setActiveCustomizationType("scale");
         }
     }
 }
