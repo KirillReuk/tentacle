@@ -28,8 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle45 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle46 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.runButton = new System.Windows.Forms.Button();
             this.colorDialog = new System.Windows.Forms.ColorDialog();
@@ -61,11 +61,16 @@
             this.layersNextButton = new System.Windows.Forms.Button();
             this.layersBackButton = new System.Windows.Forms.Button();
             this.customizationTab = new System.Windows.Forms.TabPage();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.scaleDecalButton = new System.Windows.Forms.Button();
+            this.rotateDecalButton = new System.Windows.Forms.Button();
+            this.moveDecalButton = new System.Windows.Forms.Button();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.colorButton1 = new System.Windows.Forms.Button();
+            this.colorButton3 = new System.Windows.Forms.Button();
+            this.colorButton2 = new System.Windows.Forms.Button();
             this.customizationFinishButton = new System.Windows.Forms.Button();
             this.customizationBackButton = new System.Windows.Forms.Button();
-            this.colorButton1 = new System.Windows.Forms.Button();
-            this.colorButton2 = new System.Windows.Forms.Button();
-            this.colorButton3 = new System.Windows.Forms.Button();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -73,11 +78,6 @@
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
-            this.rotateDecalButton = new System.Windows.Forms.Button();
-            this.scaleDecalButton = new System.Windows.Forms.Button();
-            this.moveDecalButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.designDataGridView)).BeginInit();
             this.mainTabControl.SuspendLayout();
@@ -87,9 +87,9 @@
             this.layerTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.layerDataGridView)).BeginInit();
             this.customizationTab.SuspendLayout();
-            this.menuStrip.SuspendLayout();
-            this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.panel1.SuspendLayout();
+            this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // pictureBox
@@ -258,9 +258,9 @@
             this.collarDataGridView.Location = new System.Drawing.Point(11, 167);
             this.collarDataGridView.Name = "collarDataGridView";
             this.collarDataGridView.RowHeadersVisible = false;
-            dataGridViewCellStyle45.SelectionBackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle45.SelectionForeColor = System.Drawing.Color.Black;
-            this.collarDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle45;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.Black;
+            this.collarDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle5;
             this.collarDataGridView.RowTemplate.Height = 24;
             this.collarDataGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.collarDataGridView.Size = new System.Drawing.Size(287, 24);
@@ -309,9 +309,9 @@
             this.manDataGridView.Location = new System.Drawing.Point(11, 120);
             this.manDataGridView.Name = "manDataGridView";
             this.manDataGridView.RowHeadersVisible = false;
-            dataGridViewCellStyle46.SelectionBackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle46.SelectionForeColor = System.Drawing.Color.Black;
-            this.manDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle46;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.Black;
+            this.manDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle6;
             this.manDataGridView.RowTemplate.Height = 24;
             this.manDataGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.manDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -439,6 +439,104 @@
             this.customizationTab.Text = "settings";
             this.customizationTab.UseVisualStyleBackColor = true;
             // 
+            // panel2
+            // 
+            this.panel2.Controls.Add(this.scaleDecalButton);
+            this.panel2.Controls.Add(this.rotateDecalButton);
+            this.panel2.Controls.Add(this.moveDecalButton);
+            this.panel2.Location = new System.Drawing.Point(3, 119);
+            this.panel2.Margin = new System.Windows.Forms.Padding(0);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(312, 432);
+            this.panel2.TabIndex = 54;
+            // 
+            // scaleDecalButton
+            // 
+            this.scaleDecalButton.BackColor = System.Drawing.Color.White;
+            this.scaleDecalButton.Location = new System.Drawing.Point(0, 216);
+            this.scaleDecalButton.Margin = new System.Windows.Forms.Padding(0);
+            this.scaleDecalButton.Name = "scaleDecalButton";
+            this.scaleDecalButton.Size = new System.Drawing.Size(312, 108);
+            this.scaleDecalButton.TabIndex = 2;
+            this.scaleDecalButton.Text = "Scale";
+            this.scaleDecalButton.UseVisualStyleBackColor = false;
+            this.scaleDecalButton.Click += new System.EventHandler(this.scaleDecalButton_Click);
+            // 
+            // rotateDecalButton
+            // 
+            this.rotateDecalButton.BackColor = System.Drawing.Color.White;
+            this.rotateDecalButton.Location = new System.Drawing.Point(0, 108);
+            this.rotateDecalButton.Margin = new System.Windows.Forms.Padding(0);
+            this.rotateDecalButton.Name = "rotateDecalButton";
+            this.rotateDecalButton.Size = new System.Drawing.Size(312, 108);
+            this.rotateDecalButton.TabIndex = 1;
+            this.rotateDecalButton.Text = "Rotate";
+            this.rotateDecalButton.UseVisualStyleBackColor = false;
+            this.rotateDecalButton.Click += new System.EventHandler(this.rotateDecalButton_Click);
+            // 
+            // moveDecalButton
+            // 
+            this.moveDecalButton.BackColor = System.Drawing.Color.White;
+            this.moveDecalButton.FlatAppearance.BorderSize = 0;
+            this.moveDecalButton.Location = new System.Drawing.Point(0, 0);
+            this.moveDecalButton.Margin = new System.Windows.Forms.Padding(0);
+            this.moveDecalButton.Name = "moveDecalButton";
+            this.moveDecalButton.Size = new System.Drawing.Size(312, 108);
+            this.moveDecalButton.TabIndex = 0;
+            this.moveDecalButton.Text = "Move";
+            this.moveDecalButton.UseVisualStyleBackColor = false;
+            this.moveDecalButton.Click += new System.EventHandler(this.moveDecalButton_Click);
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.colorButton1);
+            this.panel1.Controls.Add(this.colorButton3);
+            this.panel1.Controls.Add(this.colorButton2);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Margin = new System.Windows.Forms.Padding(0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(315, 100);
+            this.panel1.TabIndex = 53;
+            // 
+            // colorButton1
+            // 
+            this.colorButton1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.colorButton1.BackColor = System.Drawing.Color.Maroon;
+            this.colorButton1.Location = new System.Drawing.Point(0, 0);
+            this.colorButton1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.colorButton1.Name = "colorButton1";
+            this.colorButton1.Size = new System.Drawing.Size(105, 100);
+            this.colorButton1.TabIndex = 48;
+            this.colorButton1.UseVisualStyleBackColor = false;
+            this.colorButton1.Click += new System.EventHandler(this.colorButton1_Click);
+            // 
+            // colorButton3
+            // 
+            this.colorButton3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.colorButton3.BackColor = System.Drawing.Color.Yellow;
+            this.colorButton3.Dock = System.Windows.Forms.DockStyle.Right;
+            this.colorButton3.Location = new System.Drawing.Point(210, 0);
+            this.colorButton3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.colorButton3.Name = "colorButton3";
+            this.colorButton3.Size = new System.Drawing.Size(105, 100);
+            this.colorButton3.TabIndex = 50;
+            this.colorButton3.UseVisualStyleBackColor = false;
+            this.colorButton3.Click += new System.EventHandler(this.colorButton3_Click);
+            // 
+            // colorButton2
+            // 
+            this.colorButton2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.colorButton2.BackColor = System.Drawing.Color.Cyan;
+            this.colorButton2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.colorButton2.Location = new System.Drawing.Point(0, 0);
+            this.colorButton2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.colorButton2.Name = "colorButton2";
+            this.colorButton2.Size = new System.Drawing.Size(315, 100);
+            this.colorButton2.TabIndex = 49;
+            this.colorButton2.UseVisualStyleBackColor = false;
+            this.colorButton2.Click += new System.EventHandler(this.colorButton2_Click);
+            // 
             // customizationFinishButton
             // 
             this.customizationFinishButton.Location = new System.Drawing.Point(183, 565);
@@ -458,44 +556,6 @@
             this.customizationBackButton.Text = "Back";
             this.customizationBackButton.UseVisualStyleBackColor = true;
             this.customizationBackButton.Click += new System.EventHandler(this.customizationBackButton_Click);
-            // 
-            // colorButton1
-            // 
-            this.colorButton1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.colorButton1.BackColor = System.Drawing.Color.Maroon;
-            this.colorButton1.Location = new System.Drawing.Point(0, 0);
-            this.colorButton1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.colorButton1.Name = "colorButton1";
-            this.colorButton1.Size = new System.Drawing.Size(105, 100);
-            this.colorButton1.TabIndex = 48;
-            this.colorButton1.UseVisualStyleBackColor = false;
-            this.colorButton1.Click += new System.EventHandler(this.colorButton1_Click);
-            // 
-            // colorButton2
-            // 
-            this.colorButton2.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.colorButton2.BackColor = System.Drawing.Color.Cyan;
-            this.colorButton2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.colorButton2.Location = new System.Drawing.Point(0, 0);
-            this.colorButton2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.colorButton2.Name = "colorButton2";
-            this.colorButton2.Size = new System.Drawing.Size(315, 100);
-            this.colorButton2.TabIndex = 49;
-            this.colorButton2.UseVisualStyleBackColor = false;
-            this.colorButton2.Click += new System.EventHandler(this.colorButton2_Click);
-            // 
-            // colorButton3
-            // 
-            this.colorButton3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.colorButton3.BackColor = System.Drawing.Color.Yellow;
-            this.colorButton3.Dock = System.Windows.Forms.DockStyle.Right;
-            this.colorButton3.Location = new System.Drawing.Point(210, 0);
-            this.colorButton3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.colorButton3.Name = "colorButton3";
-            this.colorButton3.Size = new System.Drawing.Size(105, 100);
-            this.colorButton3.TabIndex = 50;
-            this.colorButton3.UseVisualStyleBackColor = false;
-            this.colorButton3.Click += new System.EventHandler(this.colorButton3_Click);
             // 
             // menuStrip
             // 
@@ -547,66 +607,6 @@
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.colorButton1);
-            this.panel1.Controls.Add(this.colorButton3);
-            this.panel1.Controls.Add(this.colorButton2);
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
-            this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(0);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(315, 100);
-            this.panel1.TabIndex = 53;
-            // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.scaleDecalButton);
-            this.panel2.Controls.Add(this.rotateDecalButton);
-            this.panel2.Controls.Add(this.moveDecalButton);
-            this.panel2.Location = new System.Drawing.Point(3, 119);
-            this.panel2.Margin = new System.Windows.Forms.Padding(0);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(312, 432);
-            this.panel2.TabIndex = 54;
-            // 
-            // rotateDecalButton
-            // 
-            this.rotateDecalButton.BackColor = System.Drawing.Color.White;
-            this.rotateDecalButton.Location = new System.Drawing.Point(0, 108);
-            this.rotateDecalButton.Margin = new System.Windows.Forms.Padding(0);
-            this.rotateDecalButton.Name = "rotateDecalButton";
-            this.rotateDecalButton.Size = new System.Drawing.Size(312, 108);
-            this.rotateDecalButton.TabIndex = 1;
-            this.rotateDecalButton.Text = "Rotate";
-            this.rotateDecalButton.UseVisualStyleBackColor = false;
-            this.rotateDecalButton.Click += new System.EventHandler(this.rotateDecalButton_Click);
-            // 
-            // scaleDecalButton
-            // 
-            this.scaleDecalButton.BackColor = System.Drawing.Color.White;
-            this.scaleDecalButton.Location = new System.Drawing.Point(0, 216);
-            this.scaleDecalButton.Margin = new System.Windows.Forms.Padding(0);
-            this.scaleDecalButton.Name = "scaleDecalButton";
-            this.scaleDecalButton.Size = new System.Drawing.Size(312, 108);
-            this.scaleDecalButton.TabIndex = 2;
-            this.scaleDecalButton.Text = "Scale";
-            this.scaleDecalButton.UseVisualStyleBackColor = false;
-            this.scaleDecalButton.Click += new System.EventHandler(this.scaleDecalButton_Click);
-            // 
-            // moveDecalButton
-            // 
-            this.moveDecalButton.BackColor = System.Drawing.Color.White;
-            this.moveDecalButton.FlatAppearance.BorderSize = 0;
-            this.moveDecalButton.Location = new System.Drawing.Point(0, 0);
-            this.moveDecalButton.Margin = new System.Windows.Forms.Padding(0);
-            this.moveDecalButton.Name = "moveDecalButton";
-            this.moveDecalButton.Size = new System.Drawing.Size(312, 108);
-            this.moveDecalButton.TabIndex = 0;
-            this.moveDecalButton.Text = "Move";
-            this.moveDecalButton.UseVisualStyleBackColor = false;
-            this.moveDecalButton.Click += new System.EventHandler(this.moveDecalButton_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -616,11 +616,13 @@
             this.Controls.Add(this.pictureBox);
             this.Controls.Add(this.menuStrip);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "SSD";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.designDataGridView)).EndInit();
             this.mainTabControl.ResumeLayout(false);
@@ -631,10 +633,10 @@
             this.layerTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.layerDataGridView)).EndInit();
             this.customizationTab.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             this.menuStrip.ResumeLayout(false);
             this.menuStrip.PerformLayout();
-            this.panel1.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -23,6 +23,8 @@ namespace KitGenerator
         readonly Color uncheckedButtonColor = Color.White;
         readonly Color checkedButtonColor = Color.PowderBlue;
 
+        string activeCustomization = "none";
+
         const string collarWelcome = "Select collar...";
         const string manWelcome = "Select manufacturer...";
         const string designWelcome = "Add layer...";
@@ -31,6 +33,7 @@ namespace KitGenerator
         int layerEdited = -1;
         string currentPath = "";
         List<Color> oldColors;
+        int xMove = 0, yMove = 0, rotation = 0, scaling = 0;
 
         string currentFilePath = "";
 
@@ -262,7 +265,15 @@ namespace KitGenerator
                     previewString = designLayersPath + layerTabControl.SelectedTab.Text + "\\" + currentTag + ".png";
                     break;
             }
-            return Coloring.ColorizeTemplateImage(new Bitmap(previewString), colorButton1.BackColor, colorButton2.BackColor, colorButton3.BackColor);
+            Bitmap rawDecal = new Bitmap(previewString);
+            //move
+            rawDecal = Coloring.cropAtRect(rawDecal, new Rectangle(xMove, yMove, pictureBox.Width - xMove, pictureBox.Height - yMove));
+            //rotate
+            rawDecal = Coloring.RotateImage(rawDecal, rotation);
+            //scale
+
+
+            return Coloring.ColorizeTemplateImage(rawDecal, colorButton1.BackColor, colorButton2.BackColor, colorButton3.BackColor);
         }
 
         private void mainColorButton_Click(object sender, EventArgs e)
@@ -431,6 +442,8 @@ namespace KitGenerator
 
         void setActiveCustomizationType(string custType)
         {
+            activeCustomization = custType;
+
             moveDecalButton.BackColor = uncheckedButtonColor;
             rotateDecalButton.BackColor = uncheckedButtonColor;
             scaleDecalButton.BackColor = uncheckedButtonColor;
@@ -450,6 +463,71 @@ namespace KitGenerator
                     break;
             }
         }
+        
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.W:
+                    switch (activeCustomization)
+                    {
+                        case "move":
+                            yMove++;
+                            break;
+                        case "rotate":
+                            rotation--;
+                            break;
+                        case "scale":
+                            scaling++;
+                            break;
+                    }
+                    break;
+                case Keys.A:
+                    switch (activeCustomization)
+                    {
+                        case "move":
+                            xMove++;
+                            break;
+                        case "rotate":
+                            rotation--;
+                            break;
+                        case "scale":
+                            scaling--;
+                            break;
+                    }
+                    break;
+                case Keys.S:
+                    switch (activeCustomization)
+                    {
+                        case "move":
+                            yMove--;
+                            break;
+                        case "rotate":
+                            rotation++;
+                            break;
+                        case "scale":
+                            scaling--;
+                            break;
+                    }
+                    break;
+                case Keys.D:
+                    switch (activeCustomization)
+                    {
+                        case "move":
+                            xMove--;
+                            break;
+                        case "rotate":
+                            rotation++;
+                            break;
+                        case "scale":
+                            scaling++;
+                            break;
+                    }
+                    break;
+            }
+
+            previewWithLayer(getSelectedLayer());
+        }
 
         private void moveDecalButton_Click(object sender, EventArgs e)
         {
@@ -465,5 +543,6 @@ namespace KitGenerator
         {
             setActiveCustomizationType("scale");
         }
+
     }
 }
