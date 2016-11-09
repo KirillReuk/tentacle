@@ -33,7 +33,7 @@ namespace KitGenerator
         int layerEdited = -1;
         string currentPath = "";
         List<Color> oldColors;
-        int xMove = 0, yMove = 0, rotation = 0, scaling = 0;
+        int xMove = 0, yMove = 0, rotation = 0, scaling = 100;
 
         string currentFilePath = "";
 
@@ -245,7 +245,7 @@ namespace KitGenerator
             }
         }
 
-        private Bitmap getSelectedLayer()// returns the layer selected from the grid, colorized
+        private Bitmap getSelectedLayer()// returns the layer selected from the grid, colorized, customized
         {
             if ((layerDataGridView.SelectedCells.Count == 0)||(layerDataGridView.SelectedCells[0].Tag == null))
                 return null;
@@ -266,14 +266,20 @@ namespace KitGenerator
                     break;
             }
             Bitmap rawDecal = new Bitmap(previewString);
+            Rectangle decalRect = Coloring.GetTrimmedCoordinates(rawDecal);
             //move
             rawDecal = Coloring.cropAtRect(rawDecal, new Rectangle(xMove, yMove, pictureBox.Width - xMove, pictureBox.Height - yMove));
             //rotate
             rawDecal = Coloring.RotateImage(rawDecal, rotation);
             //scale
+            Size newSize = new Size((int)(rawDecal.Width * scaling / 100), (int)(rawDecal.Height * scaling / 100));
 
-
-            return Coloring.ColorizeTemplateImage(rawDecal, colorButton1.BackColor, colorButton2.BackColor, colorButton3.BackColor);
+            Bitmap scaledImage = new Bitmap(rawDecal.Width, rawDecal.Height);
+            using (Graphics grfx = Graphics.FromImage(scaledImage))
+            {
+                grfx.DrawImage(new Bitmap(rawDecal, newSize), ((decalRect.X + decalRect.Width / 2) * (100 - scaling) / 100), ((decalRect.Y + decalRect.Height / 2) * (100 - scaling) / 100));
+            }
+            return Coloring.ColorizeTemplateImage(scaledImage, colorButton1.BackColor, colorButton2.BackColor, colorButton3.BackColor);
         }
 
         private void mainColorButton_Click(object sender, EventArgs e)
