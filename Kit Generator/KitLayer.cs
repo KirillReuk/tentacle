@@ -5,28 +5,33 @@ namespace KitGenerator
 {
     public class KitLayer
     {
-        public string name;
-        public string imageLocation;
-        public List<Color> colors;
-        public double rotation;
-        public Rectangle location;
-        public bool systemLayer;
+        public string Name { get; set; }
+        public string ImageLocation { get; set; }
+        public List<Color> Colors { get; set; }
+        public int Rotation { get; set; }
+        public int XShift { get; set; }
+        public int YShift { get; set; }
+        public int Scaling { get; set; }
+        public bool SystemLayer { get; set; }
 
-        public KitLayer(string _name, string _imageLocation, List<Color> _colors, double _rotation, Rectangle _location)
+        public KitLayer(string name, string imageLocation, List<Color> colors, int xShift, int yShift, int rotation, int scaling)
         {
-            name = _name;
-            imageLocation = _imageLocation;
-            colors = _colors;
-            rotation = _rotation;
-            location = _location;
-            systemLayer = false;
+            Name = name;
+            ImageLocation = imageLocation;
+            Colors = colors;
+            Rotation = rotation;
+            XShift = xShift;
+            YShift = yShift;
+            Scaling = scaling;
+            SystemLayer = false;
         }
 
-        public KitLayer(string _name, List<Color> _colors)
+        public KitLayer(string name, string imageLocation, List<Color> colors)
         {
-            name = _name;
-            colors = _colors;
-            systemLayer = true;
+            Name = name;
+            ImageLocation = imageLocation;
+            Colors = colors;
+            SystemLayer = true;
         }
 
         public KitLayer()

@@ -239,24 +239,6 @@ namespace KitGenerator
             return nb;
         }
 
-        public static Bitmap RotateImage(Bitmap b, float angle)
-        {
-            Bitmap returnBitmap = new Bitmap(b.Width, b.Height);
-            Graphics g = Graphics.FromImage(returnBitmap);
-            
-            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
-            
-            Rectangle coords = GetTrimmedCoordinates(b);
-            g.TranslateTransform(coords.X + coords.Width / 2, coords.Y + coords.Height / 2);
-            //Rotate.        
-            g.RotateTransform(angle);
-            //Move image back.
-            g.TranslateTransform(-coords.X - coords.Width / 2, -coords.Y - coords.Height / 2);
-
-            g.DrawImage(b, 0, 0, b.Width, b.Height);
-            return returnBitmap;
-        }
-
         public static Bitmap MatrixBlend(Bitmap _image1, Bitmap image2, byte alpha = 255)
         {
             Bitmap image1 = new Bitmap(_image1);
@@ -293,5 +275,46 @@ namespace KitGenerator
             return image1;
         }
 
+        public static Bitmap MoveBitmap(Bitmap bitmap, int xMove, int yMove, int boxX, int boxY)
+        {
+            return cropAtRect(bitmap, new Rectangle(xMove, yMove, boxX - xMove, boxY - yMove));
+        }
+
+        public static Bitmap RotateBitmap(Bitmap b, float angle, int boxX, int boxY)
+        {
+            Bitmap returnBitmap = new Bitmap(b.Width, b.Height);
+            Graphics g = Graphics.FromImage(returnBitmap);
+
+            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+
+            Rectangle coords = GetTrimmedCoordinates(b);
+            g.TranslateTransform(coords.X + coords.Width / 2, coords.Y + coords.Height / 2);
+            //Rotate.        
+            g.RotateTransform(angle);
+            //Move image back.
+            g.TranslateTransform(-coords.X - coords.Width / 2, -coords.Y - coords.Height / 2);
+
+            g.DrawImage(b, 0, 0, b.Width, b.Height);
+            return returnBitmap;
+        }
+
+        public static Bitmap ScaleBitmap(Bitmap bitmap, int scaling, int boxX, int boxY)
+        {
+            Size newSize = new Size((int)(bitmap.Width * scaling / 100), (int)(bitmap.Height * scaling / 100));
+            Rectangle decalRect = Coloring.GetTrimmedCoordinates(bitmap);
+
+            Bitmap scaledImage = new Bitmap(bitmap.Width, bitmap.Height);
+            using (Graphics grfx = Graphics.FromImage(scaledImage))
+            {
+                grfx.DrawImage(new Bitmap(bitmap, newSize), ((decalRect.X + decalRect.Width / 2) * (100 - scaling) / 100), ((decalRect.Y + decalRect.Height / 2) * (100 - scaling) / 100));
+            }
+            return scaledImage;
+        }
+
+        public static Bitmap CustomizeBitmap(Bitmap bitmap, int xMove, int yMove, float angle, int scaling, int boxX, int boxY)
+        {
+            
+            return ScaleBitmap(RotateBitmap(MoveBitmap(bitmap, xMove, yMove, boxX, boxY), angle, boxX, boxY), scaling, boxX, boxY);
+        }
     }
 }

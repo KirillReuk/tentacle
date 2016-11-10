@@ -35,6 +35,8 @@ namespace KitGenerator
         List<Color> oldColors;
         int xMove = 0, yMove = 0, rotation = 0, scaling = 100;
 
+        List<KitLayer> kitLayers;
+        KitLayer collarLayer;
         string currentFilePath = "";
 
         public Form1()
@@ -58,6 +60,8 @@ namespace KitGenerator
             designDataGridView.Rows.Add();
             designDataGridView[0, 0].Value = designWelcome;
 
+            kitLayers = new List<KitLayer>();
+
             currentFilePath = "";
 
             RefreshImage();
@@ -65,36 +69,14 @@ namespace KitGenerator
 
         private void RefreshImage()//pull all the data around, refresh the main image with it
         {
-            List<KitLayer> kitLayers = new List<KitLayer>();
-            
-            for (int ii = 0; ii < designDataGridView.RowCount - 1; ii++)
-            {
-                DataGridViewRow designRow = designDataGridView.Rows[ii];
-                KitLayer designLayer = new KitLayer(
-                    designRow.Cells[0].Value.ToString(),
-                    designLayersPath + "\\" + designRow.Cells[0].Value + ".png",
-                    new List<Color>(new Color[] { designRow.Cells[1].Style.BackColor, designRow.Cells[2].Style.BackColor, designRow.Cells[3].Style.BackColor }),
-                    0,
-                    new Rectangle());
-                kitLayers.Add(designLayer);
-            }
-            
+            List<KitLayer> kl = kitLayers.ToList();
             if (collarIsSelected)
-            {
-                KitLayer collarLayer = new KitLayer(
-                collarDataGridView[0, 0].Value.ToString(),
-                collarLayersPath + collarDataGridView[0, 0].Value + ".png",
-                new List<Color>(new Color[] { collarDataGridView[1, 0].Style.BackColor, collarDataGridView[2, 0].Style.BackColor, collarDataGridView[3, 0].Style.BackColor }),
-                0,
-                new Rectangle());
-                kitLayers.Add(collarLayer);
-            }
+                kl.Add(collarLayer);
 
             Color baseColor = mainColorButton.BackColor;
 
-            KitGenerator kg = new KitGenerator(manufacturer, baseColor, kitLayers);
-            pictureBox.Image = kg.GetKit();
-            
+            KitGenerator kg = new KitGenerator(manufacturer, baseColor, kl);
+            pictureBox.Image = kg.GetKit();   
         }
 
         private void runButton_Click(object sender, EventArgs e)
@@ -266,20 +248,11 @@ namespace KitGenerator
                     break;
             }
             Bitmap rawDecal = new Bitmap(previewString);
-            Rectangle decalRect = Coloring.GetTrimmedCoordinates(rawDecal);
-            //move
-            rawDecal = Coloring.cropAtRect(rawDecal, new Rectangle(xMove, yMove, pictureBox.Width - xMove, pictureBox.Height - yMove));
-            //rotate
-            rawDecal = Coloring.RotateImage(rawDecal, rotation);
-            //scale
-            Size newSize = new Size((int)(rawDecal.Width * scaling / 100), (int)(rawDecal.Height * scaling / 100));
-
-            Bitmap scaledImage = new Bitmap(rawDecal.Width, rawDecal.Height);
-            using (Graphics grfx = Graphics.FromImage(scaledImage))
-            {
-                grfx.DrawImage(new Bitmap(rawDecal, newSize), ((decalRect.X + decalRect.Width / 2) * (100 - scaling) / 100), ((decalRect.Y + decalRect.Height / 2) * (100 - scaling) / 100));
-            }
-            return Coloring.ColorizeTemplateImage(scaledImage, colorButton1.BackColor, colorButton2.BackColor, colorButton3.BackColor);
+            
+            //customize
+            rawDecal = Coloring.CustomizeBitmap(rawDecal, xMove, yMove, rotation, scaling, pictureBox.Width, pictureBox.Height);
+            
+            return Coloring.ColorizeTemplateImage(rawDecal, colorButton1.BackColor, colorButton2.BackColor, colorButton3.BackColor);
         }
 
         private void mainColorButton_Click(object sender, EventArgs e)
@@ -309,6 +282,11 @@ namespace KitGenerator
                     manufacturer = manDataGridView[0, 0].Value.ToString();
                     break;
                 case 2:
+                    collarLayer = new KitLayer(
+                        currentTag,
+                        collarLayersPath + currentTag + ".png",
+                        new List<Color>(new Color[] { colorButton1.BackColor, colorButton2.BackColor, colorButton3.BackColor }));
+
                     collarDataGridView[0, 0].Value = currentTag;
                     collarDataGridView[1, 0].Style.BackColor = colorButton1.BackColor;
                     collarDataGridView[2, 0].Style.BackColor = colorButton2.BackColor;
@@ -316,21 +294,40 @@ namespace KitGenerator
                     collarIsSelected = true;
                     break;
                 case 4:
+                    KitLayer designLayer = new KitLayer(
+                        layerTabControl.SelectedTab.Text + "\\" + currentTag,
+                        designLayersPath + "\\" + layerTabControl.SelectedTab.Text + "\\" + currentTag + ".png",
+                        new List<Color>(new Color[] { colorButton1.BackColor, colorButton2.BackColor, colorButton3.BackColor }),
+                        xMove,
+                        yMove,
+                        rotation,
+                        scaling);
+
                     DataGridViewRow row = new DataGridViewRow();
                     row.CreateCells(designDataGridView);
                     row.Cells[0].Value = layerTabControl.SelectedTab.Text + "\\" + currentTag;
                     row.Cells[1].Style.BackColor = colorButton1.BackColor;
                     row.Cells[2].Style.BackColor = colorButton2.BackColor;
                     row.Cells[3].Style.BackColor = colorButton3.BackColor;
+
                     if (layerEdited >= 0)
                     {
                         designDataGridView.Rows.RemoveAt(layerEdited);
                         designDataGridView.Rows.Insert(layerEdited, row);
+
+                        kitLayers[layerEdited] = designLayer;
                     }
                     else
+                    {
                         designDataGridView.Rows.Insert(designDataGridView.RowCount - 1, row);
+                        kitLayers.Add(designLayer);
+                    }
                     break;
             }
+            xMove = 0;
+            yMove = 0;
+            rotation = 0;
+            scaling = 100;
             RefreshImage();
             mainTabControl.SelectTab(0);
         }
@@ -422,6 +419,7 @@ namespace KitGenerator
             {
                 e.Cancel = true;
             }
+            kitLayers.RemoveAt(e.Row.Index);
         }
 
         private void layerTabControl_SelectedIndexChanged(object sender, EventArgs e)

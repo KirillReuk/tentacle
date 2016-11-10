@@ -42,8 +42,9 @@ namespace KitGenerator
         string topImagePath, bottomImagePath;
         Color mainColor;
         List<KitLayer> kitLayers;
+        int boxX, boxY;
 
-        public KitGenerator(string _manufacturer = "", Color? baseColor = null, List<KitLayer> _kitLayers = null)
+        public KitGenerator(string _manufacturer = "", Color? baseColor = null, List<KitLayer> _kitLayers = null, int _boxX = 0, int _boxY = 0)
         {
             manufacturer = _manufacturer;
         
@@ -51,7 +52,10 @@ namespace KitGenerator
 
             topImagePath = "..\\..\\..\\kits\\top.psd";
             bottomImagePath = "..\\..\\..\\kits\\bottom.psd";
-            
+
+            boxX = _boxX;
+            boxY = _boxY;
+
             mainColor = (Color)baseColor;
         }
         
@@ -65,8 +69,10 @@ namespace KitGenerator
             
             foreach (KitLayer kl in kitLayers)
             {
-                Bitmap bm = (Bitmap)Bitmap.FromFile(kl.imageLocation);
-                MagickImage img = new MagickImage(Coloring.ColorizeTemplateImage(bm, kl.colors[0], kl.colors[1], kl.colors[2]));
+                Bitmap bm = (Bitmap)Bitmap.FromFile(kl.ImageLocation);
+                if (!kl.SystemLayer)
+                    bm = Coloring.CustomizeBitmap(bm, kl.XShift, kl.YShift, kl.Rotation, kl.Scaling, boxX, boxY);
+                MagickImage img = new MagickImage(Coloring.ColorizeTemplateImage(bm, kl.Colors[0], kl.Colors[1], kl.Colors[2]));
                 collection.Add(img);
             }
            
