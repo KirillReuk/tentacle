@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ImageMagick;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -29,7 +30,7 @@ namespace KitGenerator
         const string manWelcome = "Select manufacturer...";
         const string designWelcome = "Add layer...";
 
-        Bitmap oldPreview;
+        Bitmap lowerPreview, upperPreview;
         int layerEdited = -1;
         string currentPath = "";
         List<Color> oldColors;
@@ -61,8 +62,14 @@ namespace KitGenerator
             designDataGridView[0, 0].Value = designWelcome;
 
             kitLayers = new List<KitLayer>();
+            collarLayer = new KitLayer();
 
             currentFilePath = "";
+
+            xMove = 0;
+            yMove = 0;
+            rotation = 0;
+            scaling = 100;
 
             RefreshImage();
         }
@@ -131,6 +138,7 @@ namespace KitGenerator
                     previewString = designLayersPath + layerTabControl.SelectedTab.Text + "\\" + currentTag + ".png";
                     break;
             }
+
             Bitmap img = Coloring.ColorizeTemplateImage(new Bitmap(previewString), colorButton1.BackColor, colorButton2.BackColor, colorButton3.BackColor);
             if (File.Exists(previewString))
                 previewWithLayer(img);
@@ -138,7 +146,14 @@ namespace KitGenerator
         
         private void collarDataGridView_Click(object sender, EventArgs e)
         {
-            RefreshImage();
+            Color baseColor = mainColorButton.BackColor;
+            KitGenerator lowerG = new KitGenerator(baseColor, kitLayers);
+            KitGenerator upperG = new KitGenerator(baseColor, new List<KitLayer>());
+
+            lowerPreview = (Bitmap)lowerG.GetKit(true, false);
+            upperPreview = new Bitmap(lowerPreview.Width, lowerPreview.Height);
+
+           // RefreshImage();
             loadLayerTab(collarLayersPath, collarDataGridView[0, 0].Value.ToString());
             oldColors = new List<Color>(new Color[] { collarDataGridView[1, 0].Style.BackColor, collarDataGridView[2, 0].Style.BackColor, collarDataGridView[3, 0].Style.BackColor });
             currentItemIndex = 2;
@@ -172,7 +187,6 @@ namespace KitGenerator
             }
             
             repaintLayerGrid();
-            oldPreview = new Bitmap(pictureBox.Image);
         }
 
         private void loadLayerTab(string path, string selectedElement) //load the layer selection tab
@@ -217,7 +231,7 @@ namespace KitGenerator
         
         private void previewWithLayer(Bitmap newLayer) //put newLayer on top of the preview, then add the frame
         {
-            pictureBox.Image = Coloring.MatrixBlend(oldPreview, newLayer);
+            pictureBox.Image = Coloring.AddTopLayer(Coloring.MatrixBlend(Coloring.MatrixBlend(lowerPreview, newLayer), upperPreview), KitGenerator.topImagePath);
 
             //put frame around 
             using (Graphics g = Graphics.FromImage(pictureBox.Image))
@@ -358,13 +372,41 @@ namespace KitGenerator
         
         private void designDataGridView_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (designDataGridView.Rows.Count == e.RowIndex + 1)
+            Color baseColor = mainColorButton.BackColor;
+            List<KitLayer> lowerLayers = new List<KitLayer>();
+            List<KitLayer> upperLayers = new List<KitLayer>();
+            foreach (DataGridViewRow layer in designDataGridView.Rows)
+            {
+                if (layer.Index == kitLayers.Count)
+                    break;
+                if (layer.Index < e.RowIndex)
+                {
+                    lowerLayers.Add(kitLayers[layer.Index]);
+                }
+                else
+                    if (layer.Index > e.RowIndex)
+                    {
+                        upperLayers.Add(kitLayers[layer.Index]);
+                    }
+            }
+            upperLayers.Add(collarLayer);
+
+            KitGenerator lowerG = new KitGenerator(baseColor, lowerLayers);
+
+            lowerPreview = (Bitmap)lowerG.GetKit(true, false);
+            upperPreview = new Bitmap(lowerPreview.Width, lowerPreview.Height);
+            for (int i = 0; i < upperLayers.Count; i++)
+            {
+                upperPreview = Coloring.MatrixBlend(upperPreview, Coloring.ColorizeTemplateImage((Bitmap)Bitmap.FromFile(upperLayers[i].ImageLocation), upperLayers[i].Colors[0], upperLayers[i].Colors[1], upperLayers[i].Colors[2]));
+            }
+            
+            if (designDataGridView.Rows.Count == e.RowIndex + 1) //add layer
             {
                 loadLayerTab(designLayersPath, "");
                 oldColors = defaultLayerColorPalette;
                 layerEdited = -1;
             }
-            else
+            else //edit layer
             {
                 loadLayerTab(designLayersPath, designDataGridView[e.ColumnIndex, e.RowIndex].Value.ToString());
                 oldColors = new List<Color>(new Color[] { designDataGridView[1, 0].Style.BackColor, designDataGridView[2, 0].Style.BackColor, designDataGridView[3, 0].Style.BackColor });

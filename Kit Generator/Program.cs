@@ -39,34 +39,54 @@ namespace KitGenerator
     public class KitGenerator
     {
         public string manufacturer;
-        string topImagePath, bottomImagePath;
         Color mainColor;
         List<KitLayer> kitLayers;
         int boxX, boxY;
 
+        public const int defaultXResolution = 414;
+        public const int defaultYResolution = 414;
+        public const string topImagePath = "..\\..\\..\\kits\\top.psd";
+        public const string bottomImagePath = "..\\..\\..\\kits\\bottom.psd";
+        public const string blankImagePath = "..\\..\\..\\kits\\_blank.png";
+
+        public KitGenerator(Color? baseColor = null, List<KitLayer> _kitLayers = null)
+        {
+            mainColor = (Color)baseColor;
+
+            kitLayers = _kitLayers;
+        }
+
         public KitGenerator(string _manufacturer = "", Color? baseColor = null, List<KitLayer> _kitLayers = null, int _boxX = 0, int _boxY = 0)
         {
             manufacturer = _manufacturer;
-        
+            
             kitLayers = _kitLayers;
-
-            topImagePath = "..\\..\\..\\kits\\top.psd";
-            bottomImagePath = "..\\..\\..\\kits\\bottom.psd";
-
+            
             boxX = _boxX;
             boxY = _boxY;
 
             mainColor = (Color)baseColor;
         }
         
-        public Image GetKit()
+        public Image GetKit(bool bottomFlag = true, bool topFlag = true)
         {
-            MagickImageCollection collection = new MagickImageCollection(bottomImagePath);
-            
-            Rectangle offsetRect = new PsdFile(bottomImagePath, Encoding.ASCII).Layers[2].Rect;
-            collection[3] = new MagickImage(collection[3].paintMagickImage(mainColor));
-            collection[3].Page = new MagickGeometry(offsetRect.X, offsetRect.Y, 0, 0);
-            
+            MagickImageCollection collection;
+
+            if (bottomFlag)
+            {
+                collection = new MagickImageCollection(bottomImagePath);
+
+                Rectangle offsetRect = new PsdFile(bottomImagePath, Encoding.ASCII).Layers[2].Rect;
+                collection[3] = new MagickImage(collection[3].paintMagickImage(mainColor));
+                collection[3].Page = new MagickGeometry(offsetRect.X, offsetRect.Y, 0, 0);
+            }
+            else
+            {
+                collection = new MagickImageCollection();
+                Bitmap blank = new Bitmap(blankImagePath);
+                collection.Add(new MagickImage(blank));
+            }
+
             foreach (KitLayer kl in kitLayers)
             {
                 Bitmap bm = (Bitmap)Bitmap.FromFile(kl.ImageLocation);
@@ -75,25 +95,15 @@ namespace KitGenerator
                 MagickImage img = new MagickImage(Coloring.ColorizeTemplateImage(bm, kl.Colors[0], kl.Colors[1], kl.Colors[2]));
                 collection.Add(img);
             }
-           
-            MagickImageCollection topImageCollection = new MagickImageCollection(topImagePath);
 
-            List<Tuple<int, int>> offsets = new List<Tuple<int, int>>();
-            PsdFile ps = new PsdFile(topImagePath, Encoding.ASCII);
-            foreach (Layer layer in ps.Layers)
-            {
-                if (layer.Name != "</Layer group>")
-                    offsets.Add(new Tuple<int, int>(layer.Rect.X, layer.Rect.Y));
-            }
+            MagickImage result;
 
-            MagickImage result = collection.Mosaic();
-            result.Composite(topImageCollection[1], offsets[0].Item1, offsets[0].Item2, CompositeOperator.Multiply);
-            result.Composite(topImageCollection[2], offsets[1].Item1, offsets[1].Item2, CompositeOperator.Darken);
-            result.Composite(topImageCollection[3], offsets[2].Item1, offsets[2].Item2, CompositeOperator.Multiply);
-            result.Composite(topImageCollection[4], offsets[3].Item1, offsets[3].Item2, CompositeOperator.HardLight);
-            result.Composite(topImageCollection[5], offsets[4].Item1, offsets[4].Item2, CompositeOperator.LinearBurn);
-            
-            return result.ToBitmap();
+            result = collection.Mosaic();
+
+            if (topFlag)
+                return Coloring.AddTopLayer(result.ToBitmap(), topImagePath);
+            else           
+                return result.ToBitmap();
         }
     }
 }

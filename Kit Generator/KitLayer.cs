@@ -5,6 +5,8 @@ namespace KitGenerator
 {
     public class KitLayer
     {
+        const string blankImagePath = "..\\..\\..\\kits\\_blank.png";
+
         public string Name { get; set; }
         public string ImageLocation { get; set; }
         public List<Color> Colors { get; set; }
@@ -36,6 +38,7 @@ namespace KitGenerator
 
         public KitLayer()
         {
+            ImageLocation = blankImagePath;
         }
     }
 }

@@ -1,8 +1,12 @@
-﻿using System;
+﻿using ImageMagick;
+using PhotoshopFile;
+using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Linq;
+using System.Text;
 
 namespace KitGenerator
 {
@@ -241,10 +245,11 @@ namespace KitGenerator
 
         public static Bitmap MatrixBlend(Bitmap _image1, Bitmap image2, byte alpha = 255)
         {
+            if ((_image1 == null) || (image2 == null))
+                return _image1;
+
             Bitmap image1 = new Bitmap(_image1);
 
-            if ((_image1 == null) || (image2 == null))
-                return image1;
 
             float alphaNorm = (float)alpha / 255.0F;
 
@@ -273,6 +278,16 @@ namespace KitGenerator
                     imageAttributes);
             }
             return image1;
+        }
+
+        public static Bitmap MultipleMatrixBlend(List<Bitmap> img)
+        {
+            Bitmap result = new Bitmap(img[0]);
+
+            for (int i = 0; i < img.Count; i++)
+                result = MatrixBlend(result, img[i]);
+
+            return result;
         }
 
         public static Bitmap MoveBitmap(Bitmap bitmap, int xMove, int yMove, int boxX, int boxY)
@@ -315,6 +330,29 @@ namespace KitGenerator
         {
             
             return ScaleBitmap(RotateBitmap(MoveBitmap(bitmap, xMove, yMove, boxX, boxY), angle, boxX, boxY), scaling, boxX, boxY);
+        }
+        
+        public static Bitmap AddTopLayer(Bitmap img, string topImagePath)
+        {
+            MagickImage result = new MagickImage(img);
+
+            MagickImageCollection topImageCollection = new MagickImageCollection(topImagePath);
+
+            List<Tuple<int, int>> offsets = new List<Tuple<int, int>>();
+            PsdFile ps = new PsdFile(topImagePath, Encoding.ASCII);
+            foreach (Layer layer in ps.Layers)
+            {
+                if (layer.Name != "</Layer group>")
+                    offsets.Add(new Tuple<int, int>(layer.Rect.X, layer.Rect.Y));
+            }
+
+            result.Composite(topImageCollection[1], offsets[0].Item1, offsets[0].Item2, CompositeOperator.Multiply);
+            result.Composite(topImageCollection[2], offsets[1].Item1, offsets[1].Item2, CompositeOperator.Darken);
+            result.Composite(topImageCollection[3], offsets[2].Item1, offsets[2].Item2, CompositeOperator.Multiply);
+            result.Composite(topImageCollection[4], offsets[3].Item1, offsets[3].Item2, CompositeOperator.HardLight);
+            result.Composite(topImageCollection[5], offsets[4].Item1, offsets[4].Item2, CompositeOperator.LinearBurn);
+
+            return result.ToBitmap();
         }
     }
 }
