@@ -333,7 +333,7 @@ namespace KitGenerator
                     }
                     else
                     {
-                        designDataGridView.Rows.Insert(designDataGridView.RowCount - 1, row);
+                        designDataGridView.Rows.Insert(1, row);
                         kitLayers.Add(designLayer);
                     }
                     break;
@@ -375,21 +375,24 @@ namespace KitGenerator
             Color baseColor = mainColorButton.BackColor;
             List<KitLayer> lowerLayers = new List<KitLayer>();
             List<KitLayer> upperLayers = new List<KitLayer>();
+            int currentKitLayer = kitLayers.Count - e.RowIndex;
+
             foreach (DataGridViewRow layer in designDataGridView.Rows)
             {
                 if (layer.Index == kitLayers.Count)
                     break;
-                if (layer.Index < e.RowIndex)
+                if (layer.Index < currentKitLayer)
                 {
                     lowerLayers.Add(kitLayers[layer.Index]);
                 }
                 else
-                    if (layer.Index > e.RowIndex)
+                    if (layer.Index > currentKitLayer)
                     {
                         upperLayers.Add(kitLayers[layer.Index]);
                     }
             }
-            upperLayers.Add(collarLayer);
+            if (collarIsSelected)
+                upperLayers.Add(collarLayer);
 
             KitGenerator lowerG = new KitGenerator(baseColor, lowerLayers);
 
@@ -400,7 +403,7 @@ namespace KitGenerator
                 upperPreview = Coloring.MatrixBlend(upperPreview, Coloring.ColorizeTemplateImage((Bitmap)Bitmap.FromFile(upperLayers[i].ImageLocation), upperLayers[i].Colors[0], upperLayers[i].Colors[1], upperLayers[i].Colors[2]));
             }
             
-            if (designDataGridView.Rows.Count == e.RowIndex + 1) //add layer
+            if (e.RowIndex == 0) //add layer
             {
                 loadLayerTab(designLayersPath, "");
                 oldColors = defaultLayerColorPalette;
@@ -408,7 +411,7 @@ namespace KitGenerator
             }
             else //edit layer
             {
-                loadLayerTab(designLayersPath, designDataGridView[e.ColumnIndex, e.RowIndex].Value.ToString());
+                loadLayerTab(designLayersPath, designDataGridView[0, e.RowIndex].Value.ToString());
                 oldColors = new List<Color>(new Color[] { designDataGridView[1, 0].Style.BackColor, designDataGridView[2, 0].Style.BackColor, designDataGridView[3, 0].Style.BackColor });
                 layerEdited = e.RowIndex;
             }
@@ -457,7 +460,7 @@ namespace KitGenerator
 
         private void designDataGridView_UserDeletingRow(object sender, DataGridViewRowCancelEventArgs e)
         {
-            if (e.Row.Index == designDataGridView.RowCount - 1)
+            if (e.Row.Index == 0)
             {
                 e.Cancel = true;
             }
