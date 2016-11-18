@@ -28,8 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
+            this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
             this.pictureBox = new System.Windows.Forms.PictureBox();
             this.runButton = new System.Windows.Forms.Button();
             this.colorDialog = new System.Windows.Forms.ColorDialog();
@@ -78,6 +79,10 @@
             this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.upTimer = new System.Windows.Forms.Timer(this.components);
+            this.downTimer = new System.Windows.Forms.Timer(this.components);
+            this.rightTimer = new System.Windows.Forms.Timer(this.components);
+            this.leftTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.designDataGridView)).BeginInit();
             this.mainTabControl.SuspendLayout();
@@ -258,9 +263,9 @@
             this.collarDataGridView.Location = new System.Drawing.Point(11, 167);
             this.collarDataGridView.Name = "collarDataGridView";
             this.collarDataGridView.RowHeadersVisible = false;
-            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.Black;
-            this.collarDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.Color.Black;
+            this.collarDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle13;
             this.collarDataGridView.RowTemplate.Height = 24;
             this.collarDataGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.collarDataGridView.Size = new System.Drawing.Size(287, 24);
@@ -309,9 +314,9 @@
             this.manDataGridView.Location = new System.Drawing.Point(11, 120);
             this.manDataGridView.Name = "manDataGridView";
             this.manDataGridView.RowHeadersVisible = false;
-            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.White;
-            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.Black;
-            this.manDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.Color.Black;
+            this.manDataGridView.RowsDefaultCellStyle = dataGridViewCellStyle14;
             this.manDataGridView.RowTemplate.Height = 24;
             this.manDataGridView.ScrollBars = System.Windows.Forms.ScrollBars.None;
             this.manDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -607,6 +612,26 @@
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
+            // upTimer
+            // 
+            this.upTimer.Interval = 50;
+            this.upTimer.Tick += new System.EventHandler(this.upTimer_Tick);
+            // 
+            // downTimer
+            // 
+            this.downTimer.Interval = 50;
+            this.downTimer.Tick += new System.EventHandler(this.downTimer_Tick);
+            // 
+            // rightTimer
+            // 
+            this.rightTimer.Interval = 50;
+            this.rightTimer.Tick += new System.EventHandler(this.rightTimer_Tick);
+            // 
+            // leftTimer
+            // 
+            this.leftTimer.Interval = 50;
+            this.leftTimer.Tick += new System.EventHandler(this.leftTimer_Tick);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -623,6 +648,7 @@
             this.Name = "Form1";
             this.Text = "SSD";
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyDown);
+            this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.Form1_KeyUp);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.designDataGridView)).EndInit();
             this.mainTabControl.ResumeLayout(false);
@@ -692,6 +718,10 @@
         private System.Windows.Forms.Button rotateDecalButton;
         private System.Windows.Forms.Button scaleDecalButton;
         private System.Windows.Forms.Button moveDecalButton;
+        private System.Windows.Forms.Timer upTimer;
+        private System.Windows.Forms.Timer downTimer;
+        private System.Windows.Forms.Timer rightTimer;
+        private System.Windows.Forms.Timer leftTimer;
     }
 }
 

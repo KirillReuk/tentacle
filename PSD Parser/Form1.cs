@@ -1,5 +1,4 @@
-﻿using ImageMagick;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -7,7 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 
 namespace KitGenerator
-{ 
+{
     public partial class Form1 : Form
     {
         string manufacturer = "";
@@ -39,6 +38,7 @@ namespace KitGenerator
         List<KitLayer> kitLayers;
         KitLayer collarLayer;
         string currentFilePath = "";
+        
 
         public Form1()
         {
@@ -512,70 +512,119 @@ namespace KitGenerator
                     break;
             }
         }
-        
+
+        private void upTimer_Tick(object sender, EventArgs e)
+        {
+            switch (activeCustomization)
+            {
+                case "move":
+                    yMove++;
+                    break;
+                case "rotate":
+                    rotation--;
+                    break;
+                case "scale":
+                    scaling++;
+                    break;
+            }
+
+            previewWithLayer(getSelectedLayer());
+        }
+
+        private void leftTimer_Tick(object sender, EventArgs e)
+        {
+            switch (activeCustomization)
+            {
+                case "move":
+                    xMove++;
+                    break;
+                case "rotate":
+                    rotation--;
+                    break;
+                case "scale":
+                    scaling--;
+                    break;
+            }
+            
+            previewWithLayer(getSelectedLayer());
+        }
+
+        private void downTimer_Tick(object sender, EventArgs e)
+        {
+            switch (activeCustomization)
+            {
+                case "move":
+                    yMove--;
+                    break;
+                case "rotate":
+                    rotation++;
+                    break;
+                case "scale":
+                    scaling--;
+                    break;
+            }
+
+            previewWithLayer(getSelectedLayer());
+        }
+
+        private void rightTimer_Tick(object sender, EventArgs e)
+        {
+            switch (activeCustomization)
+            {
+                case "move":
+                    xMove--;
+                    break;
+                case "rotate":
+                    rotation++;
+                    break;
+                case "scale":
+                    scaling++;
+                    break;
+            }
+
+            previewWithLayer(getSelectedLayer());
+        }
+
+        private void Form1_KeyUp(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.W:
+                    upTimer.Stop();
+                    break;
+                case Keys.A:
+                    leftTimer.Stop();
+                    break;
+                case Keys.S:
+                    downTimer.Stop();
+                    break;
+                case Keys.D:
+                    rightTimer.Stop();
+                    break;
+            }
+        }
+
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
             switch (e.KeyCode)
             {
                 case Keys.W:
-                    switch (activeCustomization)
-                    {
-                        case "move":
-                            yMove++;
-                            break;
-                        case "rotate":
-                            rotation--;
-                            break;
-                        case "scale":
-                            scaling++;
-                            break;
-                    }
+                    upTimer.Enabled = true;
+                    upTimer.Start();
                     break;
                 case Keys.A:
-                    switch (activeCustomization)
-                    {
-                        case "move":
-                            xMove++;
-                            break;
-                        case "rotate":
-                            rotation--;
-                            break;
-                        case "scale":
-                            scaling--;
-                            break;
-                    }
+                    leftTimer.Enabled = true;
+                    leftTimer.Start();
                     break;
                 case Keys.S:
-                    switch (activeCustomization)
-                    {
-                        case "move":
-                            yMove--;
-                            break;
-                        case "rotate":
-                            rotation++;
-                            break;
-                        case "scale":
-                            scaling--;
-                            break;
-                    }
+                    downTimer.Enabled = true;
+                    downTimer.Start();
                     break;
                 case Keys.D:
-                    switch (activeCustomization)
-                    {
-                        case "move":
-                            xMove--;
-                            break;
-                        case "rotate":
-                            rotation++;
-                            break;
-                        case "scale":
-                            scaling++;
-                            break;
-                    }
+                    rightTimer.Enabled = true;
+                    rightTimer.Start();
                     break;
             }
-
-            previewWithLayer(getSelectedLayer());
         }
 
         private void moveDecalButton_Click(object sender, EventArgs e)
