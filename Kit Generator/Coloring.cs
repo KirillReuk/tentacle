@@ -328,8 +328,7 @@ namespace KitGenerator
 
         public static Bitmap CustomizeBitmap(Bitmap bitmap, int xMove, int yMove, float angle, int scaling, int boxX, int boxY)
         {
-            
-            return ScaleBitmap(RotateBitmap(MoveBitmap(bitmap, xMove, yMove, boxX, boxY), angle, boxX, boxY), scaling, boxX, boxY);
+            return MoveBitmap(ScaleBitmap(RotateBitmap(bitmap, angle, boxX, boxY), scaling, boxX, boxY), xMove, yMove, boxX, boxY);
         }
         
         public static Bitmap AddTopLayer(Bitmap img, string topImagePath)
